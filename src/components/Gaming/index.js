@@ -1,27 +1,21 @@
 import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
+import {SiYoutubegaming} from 'react-icons/si'
 import {Link} from 'react-router-dom'
-import {AiFillFire} from 'react-icons/ai'
 import SideBar from '../SideBar'
 import Header from '../Header'
 import {
-  TrendingContainer,
-  TrendingContainerSubContainer,
+  GamingContainer,
+  GamingSubContainer,
   TopSection,
   FireContainer,
   CustomHeading,
-  TrendingCardContainer,
-  TrendingCard,
-  TrendingCardImg,
-  TrendingCardDetails,
-  TrendingCardTitle,
-  TrendingCardViewTime,
-  TrendingCardName,
+  GamingCardContainer,
+  GamingCard,
+  GamingCardImg,
+  GamingCardTitle,
   View,
-  Name,
-  Time,
-  StyledBsDot,
   LoaderContainer,
   FailureContainer,
   FailureImg,
@@ -37,20 +31,19 @@ const apiStatusConstants = {
   inProgress: 'IN_PROGRESS',
 }
 
-class Trending extends Component {
-  state = {trendingData: [], apiStatus: apiStatusConstants.initial}
+class Gaming extends Component {
+  state = {gamingData: [], apiStatus: apiStatusConstants.initial}
 
   componentDidMount() {
-    this.getTrendingVideo()
+    this.getGamingVideoData()
   }
 
-  getTrendingVideo = async () => {
+  getGamingVideoData = async () => {
     this.setState({
       apiStatus: apiStatusConstants.inProgress,
     })
 
     const jwtToken = Cookies.get('jwt_token')
-
     const options = {
       method: 'GET',
       headers: {
@@ -58,27 +51,18 @@ class Trending extends Component {
       },
     }
 
-    const response = await fetch(
-      'https://apis.ccbp.in/videos/trending',
-      options,
-    )
+    const response = await fetch('https://apis.ccbp.in/videos/gaming', options)
+
     if (response.ok === true) {
       const responseObj = await response.json()
-      const trendingData = responseObj.videos.map(vid => ({
+      const gamingData = responseObj.videos.map(vid => ({
         id: vid.id,
-        publishedAt: vid.published_at,
         thumbnailUrl: vid.thumbnail_url,
         title: vid.title,
         viewCount: vid.view_count,
-        channel: {
-          name: vid.channel.name,
-          profileImageUrl: vid.channel.profile_image_url,
-        },
       }))
-      this.setState({
-        trendingData,
-        apiStatus: apiStatusConstants.success,
-      })
+
+      this.setState({gamingData, apiStatus: apiStatusConstants.success})
     } else if (response.status !== 401) {
       this.setState({
         apiStatus: apiStatusConstants.failure,
@@ -86,37 +70,28 @@ class Trending extends Component {
     }
   }
 
-  trendingListSection = () => {
-    const {trendingData} = this.state
+  gamingListSection = () => {
+    const {gamingData} = this.state
     return (
-      <TrendingContainerSubContainer>
+      <GamingSubContainer>
         <TopSection>
           <FireContainer>
-            <AiFillFire size={35} style={{color: 'red'}} />
+            <SiYoutubegaming size={35} style={{color: 'red'}} />
           </FireContainer>
-          <CustomHeading>Trending</CustomHeading>
+          <CustomHeading>Gaming</CustomHeading>
         </TopSection>
-        <TrendingCardContainer>
-          {trendingData.map(vid => (
-            <TrendingCard>
-              <Link to={`/video/${vid.id}`}>
-                <TrendingCardImg src={vid.thumbnailUrl} alt="" />
-              </Link>
-              <Link to={`/video/${vid.id}`}>
-                <TrendingCardDetails>
-                  <TrendingCardTitle>{vid.title}</TrendingCardTitle>
-                  <TrendingCardName>{vid.channel.name}</TrendingCardName>
-                  <TrendingCardViewTime>
-                    <View>{`${vid.viewCount} views`}</View>
-                    <StyledBsDot />
-                    <Time>{vid.publishedAt}</Time>
-                  </TrendingCardViewTime>
-                </TrendingCardDetails>
-              </Link>
-            </TrendingCard>
+        <GamingCardContainer>
+          {gamingData.map(game => (
+            <Link to={`/video/${game.id}`}>
+              <GamingCard>
+                <GamingCardImg src={game.thumbnailUrl} alt="" />
+                <GamingCardTitle>{game.title}</GamingCardTitle>
+                <View>{`${game.viewCount} Watching Worlwide`}</View>
+              </GamingCard>
+            </Link>
           ))}
-        </TrendingCardContainer>
-      </TrendingContainerSubContainer>
+        </GamingCardContainer>
+      </GamingSubContainer>
     )
   }
 
@@ -141,11 +116,11 @@ class Trending extends Component {
     </LoaderContainer>
   )
 
-  renderTrendingSection = () => {
+  renderGamingSection = () => {
     const {apiStatus} = this.state
     switch (apiStatus) {
       case apiStatusConstants.success:
-        return this.trendingListSection()
+        return this.gamingListSection()
       case apiStatusConstants.failure:
         return this.renderFailureView()
       case apiStatusConstants.inProgress:
@@ -159,13 +134,13 @@ class Trending extends Component {
     return (
       <>
         <Header />
-        <TrendingContainer>
+        <GamingContainer>
           <SideBar />
-          {this.renderTrendingSection()}
-        </TrendingContainer>
+          {this.renderGamingSection()}
+        </GamingContainer>
       </>
     )
   }
 }
 
-export default Trending
+export default Gaming

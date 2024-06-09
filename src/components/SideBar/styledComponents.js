@@ -23,6 +23,7 @@ export const SideBarList = styled.li`
   align-items: center;
   background: ${props => (props.section ? '#d7dfe9' : '#f9f9f9')};
   padding: 4px 36px;
+  text-decoration: none;
 `
 export const CustomMenu = styled.p`
   margin-top: 10px;
@@ -31,19 +32,23 @@ export const CustomMenu = styled.p`
 export const StyledHomeLogo = styled(IoMdHome)`
   font-size: 19px;
   margin-right: 30px;
+  color: ${props => (props.color ? 'red' : 'black')};
 `
 export const StyledTrendLogo = styled(FaFire)`
   font-size: 19px;
   margin-right: 30px;
+  color: ${props => (props.color ? 'red' : 'black')};
 `
 export const StyledGameLogo = styled(SiYoutubegaming)`
   font-size: 19px;
   margin-right: 30px;
+  color: ${props => (props.color ? 'red' : 'black')};
 `
 export const StyledSavedVLogo = styled(CgPlayListAdd)`
   font-size: 23px;
   margin-right: 27px;
   margin-top: 6px;
+  color: ${props => (props.color ? 'red' : 'black')};
 `
 
 export const Footer = styled.div`

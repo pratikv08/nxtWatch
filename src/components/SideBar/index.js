@@ -1,4 +1,5 @@
 import {Component} from 'react'
+import {Link, withRouter} from 'react-router-dom'
 import {
   SideBarContainer,
   SideBarListContainer,
@@ -26,37 +27,36 @@ class SideBar extends Component {
 
   render() {
     const {activeSection} = this.state
+    const {location} = this.props
+    const {pathname} = location
+
     return (
       <SideBarContainer>
         <SideBarListContainer>
-          <SideBarList
-            onClick={() => this.handleItemClick('Home')}
-            section={activeSection === 'Home'}
-          >
-            <StyledHomeLogo />
-            <CustomMenu>Home</CustomMenu>
-          </SideBarList>
-          <SideBarList
-            onClick={() => this.handleItemClick('Trending')}
-            section={activeSection === 'Trending'}
-          >
-            <StyledTrendLogo />
-            <CustomMenu>Trending</CustomMenu>
-          </SideBarList>
-          <SideBarList
-            onClick={() => this.handleItemClick('Gaming')}
-            section={activeSection === 'Gaming'}
-          >
-            <StyledGameLogo />
-            <CustomMenu>Gaming</CustomMenu>
-          </SideBarList>
-          <SideBarList
-            onClick={() => this.handleItemClick('SavedVideos')}
-            section={activeSection === 'SavedVideos'}
-          >
-            <StyledSavedVLogo />
-            <CustomMenu>Saved videos</CustomMenu>
-          </SideBarList>
+          <Link to="/" style={{textDecoration: 'none'}}>
+            <SideBarList section={pathname === '/'}>
+              <StyledHomeLogo color={pathname === '/'} />
+              <CustomMenu>Home</CustomMenu>
+            </SideBarList>
+          </Link>
+          <Link to="/trending" style={{textDecoration: 'none'}}>
+            <SideBarList section={pathname === '/trending'}>
+              <StyledTrendLogo color={pathname === '/trending'} />
+              <CustomMenu>Trending</CustomMenu>
+            </SideBarList>
+          </Link>
+          <Link to="/gaming" style={{textDecoration: 'none'}}>
+            <SideBarList section={pathname === '/gaming'}>
+              <StyledGameLogo color={pathname === '/gaming'} />
+              <CustomMenu>Gaming</CustomMenu>
+            </SideBarList>
+          </Link>
+          <Link to="/saved-videos" style={{textDecoration: 'none'}}>
+            <SideBarList section={pathname === '/saved-videos'}>
+              <StyledSavedVLogo color={pathname === '/saved-videos'} />
+              <CustomMenu>Saved videos</CustomMenu>
+            </SideBarList>
+          </Link>
         </SideBarListContainer>
         <Footer>
           <FooterHeading>CONTACT US</FooterHeading>
@@ -82,4 +82,4 @@ class SideBar extends Component {
     )
   }
 }
-export default SideBar
+export default withRouter(SideBar)

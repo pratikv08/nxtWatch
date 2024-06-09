@@ -1,12 +1,10 @@
 import styled from 'styled-components'
-import {BsDot} from 'react-icons/bs'
 
-export const TrendingContainer = styled.div`
+export const GamingContainer = styled.div`
   min-height: 120vh;
   display: flex;
 `
-
-export const TrendingContainerSubContainer = styled.div`
+export const GamingSubContainer = styled.div`
   width: 79%;
 `
 export const TopSection = styled.div`
@@ -16,42 +14,31 @@ export const TopSection = styled.div`
   padding: 4px 40px;
 `
 export const FireContainer = styled.div`
-  // border: 1px red solid;
   border-radius: 100%;
   margin-right: 20px;
-  padding: 12px 13px;
+  padding: 13px 14px;
   background: #d7dfe9;
 `
 export const CustomHeading = styled.h1``
-export const TrendingCardContainer = styled.ul`
-  padding: 40px;
-  padding-top: 32px;
-  height:100vh;
-  overflow:auto;
-  margin-top: 0px;
-}
-`
-export const TrendingCard = styled.li`
-  display: flex;
-  margin-bottom: 40px;
-`
 
-export const TrendingCardImg = styled.img`
-  width: 250px;
-  margin-right: 20px;
-`
-export const TrendingCardDetails = styled.div``
-export const TrendingCardTitle = styled.div``
-export const TrendingCardViewTime = styled.div`
+export const GamingCardContainer = styled.ul`
+  list-style-type: none;
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  overflow: auto;
+  height: 100vh;
+  margin-top: 0px;
+  padding: 28px 40px;
 `
-export const TrendingCardName = styled.div``
-export const View = styled.p``
-export const Name = styled.p``
-export const Time = styled.p``
-export const StyledBsDot = styled(BsDot)`
-  font-size: 18px;
+export const GamingCard = styled.li``
+export const GamingCardImg = styled.img`
+  width: 200px;
+`
+export const GamingCardTitle = styled.p`
+  margin-bottom: 0px;
+`
+export const View = styled.p`
   margin-top: 4px;
 `
 export const LoaderContainer = styled.div`
