@@ -2,8 +2,11 @@ import {Component} from 'react'
 import Cookies from 'js-cookie'
 import {Link} from 'react-router-dom'
 import {AiFillFire} from 'react-icons/ai'
+import SideBar from '../SideBar'
+import Header from '../Header'
 import {
   TrendingContainer,
+  TrendingContainerSubContainer,
   TopSection,
   FireContainer,
   CustomHeading,
@@ -66,34 +69,40 @@ class Trending extends Component {
       return <p>Loading...</p>
     }
     return (
-      <TrendingContainer>
-        <TopSection>
-          <FireContainer>
-            <AiFillFire size={35} style={{color: 'red'}} />
-          </FireContainer>
-          <CustomHeading>Trending</CustomHeading>
-        </TopSection>
-        <TrendingCardContainer>
-          {trendingData.map(vid => (
-            <TrendingCard>
-              <Link to={`/video/${vid.id}`}>
-                <TrendingCardImg src={vid.thumbnailUrl} alt="" />
-              </Link>
-              <Link to={`/video/${vid.id}`}>
-                <TrendingCardDetails>
-                  <TrendingCardTitle>{vid.title}</TrendingCardTitle>
-                  <TrendingCardName>{vid.channel.name}</TrendingCardName>
-                  <TrendingCardViewTime>
-                    <View>{`${vid.viewCount} views`}</View>
-                    <StyledBsDot />
-                    <Time>{vid.publishedAt}</Time>
-                  </TrendingCardViewTime>
-                </TrendingCardDetails>
-              </Link>
-            </TrendingCard>
-          ))}
-        </TrendingCardContainer>
-      </TrendingContainer>
+      <>
+        <Header />
+        <TrendingContainer>
+          <SideBar />
+          <TrendingContainerSubContainer>
+            <TopSection>
+              <FireContainer>
+                <AiFillFire size={35} style={{color: 'red'}} />
+              </FireContainer>
+              <CustomHeading>Trending</CustomHeading>
+            </TopSection>
+            <TrendingCardContainer>
+              {trendingData.map(vid => (
+                <TrendingCard>
+                  <Link to={`/video/${vid.id}`}>
+                    <TrendingCardImg src={vid.thumbnailUrl} alt="" />
+                  </Link>
+                  <Link to={`/video/${vid.id}`}>
+                    <TrendingCardDetails>
+                      <TrendingCardTitle>{vid.title}</TrendingCardTitle>
+                      <TrendingCardName>{vid.channel.name}</TrendingCardName>
+                      <TrendingCardViewTime>
+                        <View>{`${vid.viewCount} views`}</View>
+                        <StyledBsDot />
+                        <Time>{vid.publishedAt}</Time>
+                      </TrendingCardViewTime>
+                    </TrendingCardDetails>
+                  </Link>
+                </TrendingCard>
+              ))}
+            </TrendingCardContainer>
+          </TrendingContainerSubContainer>
+        </TrendingContainer>
+      </>
     )
   }
 }

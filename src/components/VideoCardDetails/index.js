@@ -2,8 +2,10 @@ import {Component} from 'react'
 import Cookies from 'js-cookie'
 import ReactPlayer from 'react-player'
 import {AiOutlineLike, AiOutlineDislike} from 'react-icons/ai'
+import {IoBookmarksOutline} from 'react-icons/io5'
 import Header from '../Header'
 import SideBar from '../SideBar'
+import NxtWatchContext from '../../context/NxtWatchContext'
 import {
   VideoCardDetailsContainer,
   VideoCardDetailsDescriptionContainer,
@@ -27,7 +29,7 @@ import {
 } from './styledComponents'
 
 class VideoCardDetails extends Component {
-  state = {videoData: {}}
+  state = {videoData: {}, isLiked: false, isDisliked: false}
 
   componentDidMount() {
     this.getVideoDetails()
@@ -66,8 +68,22 @@ class VideoCardDetails extends Component {
     this.setState({videoData: videoDetailsData})
   }
 
+  handleLikes = () => {
+    this.setState(prevState => ({
+      isLiked: !prevState.isLiked,
+      isDisliked: false,
+    }))
+  }
+
+  handleDislikes = () => {
+    this.setState(prevState => ({
+      isDisliked: !prevState.isDisliked,
+      isLiked: false,
+    }))
+  }
+
   render() {
-    const {videoData} = this.state
+    const {videoData, isDisliked, isLiked} = this.state
     if (!videoData.channel) {
       return <p>Loading...</p>
     }
@@ -78,54 +94,90 @@ class VideoCardDetails extends Component {
         <Header />
         <VideoCardDetailsContainer>
           <SideBar />
-          <VideoCardDetailsDescriptionContainer>
-            <VideoCardDetailsDescriptionVideo>
-              <ReactPlayer
-                url={videoData.videoUrl}
-                controls
-                width="100%"
-                height="500px"
-              />
-            </VideoCardDetailsDescriptionVideo>
-            <VideoCardDetailsDescriptionPara>
-              {videoData.title}
-            </VideoCardDetailsDescriptionPara>
-            <VideoCardDetailsDescriptionDetailsContainer>
-              <VideoCardDetailsDescriptionDetailsContainerTop>
-                <Views>{`${videoData.viewCount} views`}</Views>
-                <StyledBsDot />
-                <Time>{videoData.publishedAt}</Time>
-              </VideoCardDetailsDescriptionDetailsContainerTop>
-              <VideoCardDetailsDescriptionDetailsContainerBottom>
-                <LikeContainer>
-                  <AiOutlineLike size={24} />
-                  <LikePara>Like</LikePara>
-                </LikeContainer>
-                <LikeContainer>
-                  <AiOutlineDislike size={24} />
-                  <LikePara>Dislike</LikePara>
-                </LikeContainer>
-                <LikeContainer>
-                  <AiOutlineDislike size={24} />
-                  <LikePara>Save</LikePara>
-                </LikeContainer>
-              </VideoCardDetailsDescriptionDetailsContainerBottom>
-            </VideoCardDetailsDescriptionDetailsContainer>
-            <hr />
-            <ChannelDetails>
-              <CustomChannelImg
-                src={videoData.channel.profileImageUrl}
-                alt=""
-              />
-              <TitleChannelContainer>
-                <ChannelSubDetails>
-                  <ChannelName>{videoData.channel.name}</ChannelName>
-                  <Subscribers>{`${videoData.channel.subscriberCount} subscribers`}</Subscribers>
-                </ChannelSubDetails>
-                <Title>{videoData.title}</Title>
-              </TitleChannelContainer>
-            </ChannelDetails>
-          </VideoCardDetailsDescriptionContainer>
+
+          <NxtWatchContext.Consumer>
+            {value => {
+              const {
+                isDarkTheme,
+                savedVideos,
+                addVideoToSaved,
+                removeVideoFromSaved,
+              } = value
+              const isVideoSaved = savedVideos.some(
+                video => video.id === videoData.id,
+              )
+
+              const handleSaveVideo = () => {
+                if (isVideoSaved) {
+                  removeVideoFromSaved(videoData.id)
+                } else {
+                  addVideoToSaved(videoData)
+                }
+              }
+              console.log(savedVideos)
+              return (
+                <VideoCardDetailsDescriptionContainer
+                  style={{background: isDarkTheme ? 'grey' : ''}}
+                >
+                  <VideoCardDetailsDescriptionVideo>
+                    <ReactPlayer
+                      url={videoData.videoUrl}
+                      controls
+                      width="100%"
+                      height="500px"
+                    />
+                  </VideoCardDetailsDescriptionVideo>
+                  <VideoCardDetailsDescriptionPara>
+                    {videoData.title}
+                  </VideoCardDetailsDescriptionPara>
+                  <VideoCardDetailsDescriptionDetailsContainer>
+                    <VideoCardDetailsDescriptionDetailsContainerTop>
+                      <Views>{`${videoData.viewCount} views`}</Views>
+                      <StyledBsDot />
+                      <Time>{videoData.publishedAt}</Time>
+                    </VideoCardDetailsDescriptionDetailsContainerTop>
+                    <VideoCardDetailsDescriptionDetailsContainerBottom>
+                      <LikeContainer
+                        onClick={this.handleLikes}
+                        style={{color: isLiked ? '#3b82f6' : 'black'}}
+                      >
+                        <AiOutlineLike size={24} />
+                        <LikePara>Like</LikePara>
+                      </LikeContainer>
+                      <LikeContainer
+                        onClick={this.handleDislikes}
+                        style={{color: isDisliked ? '#3b82f6' : 'black'}}
+                      >
+                        <AiOutlineDislike size={24} />
+                        <LikePara>Dislike</LikePara>
+                      </LikeContainer>
+                      <LikeContainer
+                        onClick={handleSaveVideo}
+                        style={{color: isVideoSaved ? '#3b82f6' : 'black'}}
+                      >
+                        <IoBookmarksOutline size={22} />
+                        <LikePara>{isVideoSaved ? 'Saved' : 'Save'}</LikePara>
+                      </LikeContainer>
+                    </VideoCardDetailsDescriptionDetailsContainerBottom>
+                  </VideoCardDetailsDescriptionDetailsContainer>
+                  <hr />
+                  <ChannelDetails>
+                    <CustomChannelImg
+                      src={videoData.channel.profileImageUrl}
+                      alt=""
+                    />
+                    <TitleChannelContainer>
+                      <ChannelSubDetails>
+                        <ChannelName>{videoData.channel.name}</ChannelName>
+                        <Subscribers>{`${videoData.channel.subscriberCount} subscribers`}</Subscribers>
+                      </ChannelSubDetails>
+                      <Title>{videoData.title}</Title>
+                    </TitleChannelContainer>
+                  </ChannelDetails>
+                </VideoCardDetailsDescriptionContainer>
+              )
+            }}
+          </NxtWatchContext.Consumer>
         </VideoCardDetailsContainer>
       </>
     )

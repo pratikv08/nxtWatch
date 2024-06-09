@@ -10,8 +10,10 @@ export const VideoCardDetailsContainer = styled.div`
   width: 100%;
 `
 export const VideoCardDetailsDescriptionContainer = styled.div`
-  width: 100%;
+  width: 79%;
   padding: 28px;
+  padding-top: 16px;
+  min-height: 150vh;
 `
 export const VideoCardDetailsDescriptionVideo = styled.div`
   width: 100%;
@@ -40,6 +42,8 @@ export const LikeContainer = styled.div`
   align-items: center;
   margin-right: 12px;
   margin-left: 12px;
+  cursor: pointer;
+  user-select: none;
 `
 export const LikePara = styled.p`
   margin-right: 4px;

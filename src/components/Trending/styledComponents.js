@@ -1,23 +1,35 @@
 import styled from 'styled-components'
 import {BsDot} from 'react-icons/bs'
 
-export const TrendingContainer = styled.div``
+export const TrendingContainer = styled.div`
+  min-height: 120vh;
+  display: flex;
+`
+
+export const TrendingContainerSubContainer = styled.div`
+  width: 79%;
+`
 export const TopSection = styled.div`
   display: flex;
   align-items: center;
   background-color: #ebebeb;
-  padding: 20px 40px;
+  padding: 4px 40px;
 `
 export const FireContainer = styled.div`
-  border: 1px red solid;
+  // border: 1px red solid;
   border-radius: 100%;
   margin-right: 20px;
-  padding: 16px;
+  padding: 12px 13px;
+  background: #d7dfe9;
 `
 export const CustomHeading = styled.h1``
 export const TrendingCardContainer = styled.ul`
   padding: 40px;
   padding-top: 32px;
+  height:100vh;
+  overflow:auto;
+  margin-top: 0px;
+}
 `
 export const TrendingCard = styled.li`
   display: flex;
