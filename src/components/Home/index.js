@@ -1,4 +1,5 @@
 import {Component} from 'react'
+import Loader from 'react-loader-spinner'
 import {IoIosSearch} from 'react-icons/io'
 import Cookies from 'js-cookie'
 import Header from '../Header'
@@ -13,13 +14,27 @@ import {
   SearchIconContainer,
   VideoCardContainer,
   HomeContainer,
+  LoaderContainer,
+  FailureContainer,
+  FailureImg,
+  FailureHeading,
+  FailurePara,
+  FailureRetryBtn,
 } from './styledComponents'
+
+const apiStatusConstants = {
+  initial: 'INITIAL',
+  success: 'SUCCESS',
+  failure: 'FAILURE',
+  inProgress: 'IN_PROGRESS',
+}
 
 class Home extends Component {
   state = {
     filteredVideosList: [],
     activeSection: 'Home',
     searchInput: '',
+    apiStatus: apiStatusConstants.initial,
   }
 
   componentDidMount() {
@@ -27,6 +42,10 @@ class Home extends Component {
   }
 
   fetchHomeVideoList = async () => {
+    this.setState({
+      apiStatus: apiStatusConstants.inProgress,
+    })
+
     const {searchInput} = this.state
 
     const url = `https://apis.ccbp.in/videos/all?search=${searchInput}`
@@ -38,22 +57,29 @@ class Home extends Component {
       },
     }
     const response = await fetch(url, options)
-    const fetchedData = await response.json()
-    const videosList = fetchedData.videos
-    const filteredVideosList = videosList.map(video => ({
-      id: video.id,
-      publishedAt: video.published_at,
-      thumbnailUrl: video.thumbnail_url,
-      title: video.title,
-      viewCount: video.view_count,
-      channel: {
-        name: video.channel.name,
-        profileImageUrl: video.channel.profile_image_url,
-      },
-    }))
-    this.setState({
-      filteredVideosList,
-    })
+    if (response.ok === true) {
+      const fetchedData = await response.json()
+      const videosList = fetchedData.videos
+      const filteredVideosList = videosList.map(video => ({
+        id: video.id,
+        publishedAt: video.published_at,
+        thumbnailUrl: video.thumbnail_url,
+        title: video.title,
+        viewCount: video.view_count,
+        channel: {
+          name: video.channel.name,
+          profileImageUrl: video.channel.profile_image_url,
+        },
+      }))
+      this.setState({
+        filteredVideosList,
+        apiStatus: apiStatusConstants.success,
+      })
+    } else if (response.status !== 401) {
+      this.setState({
+        apiStatus: apiStatusConstants.failure,
+      })
+    }
   }
 
   changeSearchInput = event => {
@@ -74,53 +100,69 @@ class Home extends Component {
     const {filteredVideosList, searchInput} = this.state
     console.log(searchInput)
     return (
-      <HomeVideosList>
-        <SearchBar>
-          <SearchInput
-            type="search"
-            placeholder="Search"
-            onChange={this.changeSearchInput}
-            onKeyDown={this.handleKeyDown}
-          />
-          <SearchIconContainer onClick={this.searchVideos}>
-            <IoIosSearch />
-          </SearchIconContainer>
-        </SearchBar>
-        <VideoCardContainer>
-          {filteredVideosList.map(card => (
-            <VideoCard card={card} key={card.id} />
-          ))}
-        </VideoCardContainer>
-      </HomeVideosList>
+      <VideoCardContainer>
+        {filteredVideosList.map(card => (
+          <VideoCard card={card} key={card.id} />
+        ))}
+      </VideoCardContainer>
     )
   }
 
-  // handleTheSection = section => {
-  //   this.setState({activeSection: section})
-  // }
+  renderFailureView = () => (
+    <FailureContainer>
+      <FailureImg
+        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
+        alt="failure"
+      />
+      <FailureHeading>Oops! Something Went Wrong</FailureHeading>
+      <FailurePara>
+        We are having some trouble to complete your request.
+      </FailurePara>
+      <FailurePara>Please try again.</FailurePara>
+      <FailureRetryBtn>Retry</FailureRetryBtn>
+    </FailureContainer>
+  )
 
-  // renderContent = () => {
-  //   const {activeSection} = this.state
-  //   switch (activeSection) {
-  //     case 'Home':
-  //       return this.homeListSection()
-  //     case 'Trending':
-  //       return <Trending />
-  //     case 'Gaming':
-  //       return <Gaming />
-  //     case 'SavedVideos':
-  //       return <h1>SavedVideos</h1>
-  //     default:
-  //       return <h1>Home</h1>
-  //   }
-  // }
+  renderLoader = () => (
+    <LoaderContainer data-testid="loader">
+      <Loader type="ThreeDots" color="#4f46e5" height="50" width="50" />
+    </LoaderContainer>
+  )
+
+  renderHomeSection = () => {
+    const {apiStatus} = this.state
+    switch (apiStatus) {
+      case apiStatusConstants.success:
+        return this.homeListSection()
+      case apiStatusConstants.failure:
+        return this.renderFailureView()
+      case apiStatusConstants.inProgress:
+        return this.renderLoader()
+      default:
+        return null
+    }
+  }
+
   render() {
     return (
       <>
         <Header />
         <HomeContainer>
           <SideBar />
-          {this.homeListSection()}
+          <HomeVideosList>
+            <SearchBar>
+              <SearchInput
+                type="search"
+                placeholder="Search"
+                onChange={this.changeSearchInput}
+                onKeyDown={this.handleKeyDown}
+              />
+              <SearchIconContainer onClick={this.searchVideos}>
+                <IoIosSearch />
+              </SearchIconContainer>
+            </SearchBar>
+            {this.renderHomeSection()}
+          </HomeVideosList>
         </HomeContainer>
       </>
     )

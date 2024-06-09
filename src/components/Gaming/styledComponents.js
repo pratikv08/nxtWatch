@@ -41,3 +41,43 @@ export const GamingCardTitle = styled.p`
 export const View = styled.p`
   margin-top: 4px;
 `
+export const LoaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 79%;
+  height: 60vh;
+`
+
+export const FailureContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 79%;
+  padding-top: 28px;
+`
+export const FailureImg = styled.img`
+  width: 50%;
+`
+export const FailureHeading = styled.h2`
+  margin-top: 32px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  font-size: 28px;
+`
+export const FailurePara = styled.p`
+  margin-top: 0px;
+  margin-bottom: 4px;
+  font-size: 20px;
+`
+export const FailureRetryBtn = styled.button`
+  margin-top: 16px;
+  padding: 12px 24px;
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  font-size: 15px;
+  cursor: pointer;
+`
