@@ -52,7 +52,6 @@ class Home extends Component {
 
   render() {
     const {filteredVideosList} = this.state
-    console.log(filteredVideosList)
     return (
       <>
         <Header />

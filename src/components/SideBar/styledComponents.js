@@ -6,7 +6,7 @@ import {CgPlayListAdd} from 'react-icons/cg'
 
 export const SideBarContainer = styled.div`
   width: 21%;
-  padding-left: 27px;
+  // padding-left: 27px;
   background-color: #f9f9f9;
   height: 115vh;
   display: flex;
@@ -18,8 +18,11 @@ export const SideBarListContainer = styled.ul`
   list-style-type: none;
 `
 export const SideBarList = styled.li`
+  cursor: pointer;
   display: flex;
   align-items: center;
+  background: ${props => (props.section ? '#d7dfe9' : '#f9f9f9')};
+  padding: 4px 36px;
 `
 export const CustomMenu = styled.p`
   margin-top: 10px;
@@ -45,6 +48,7 @@ export const StyledSavedVLogo = styled(CgPlayListAdd)`
 
 export const Footer = styled.div`
   margin-bottom: 20px;
+  padding-left: 24px;
 `
 export const FooterHeading = styled.h2`
   font-size: 17px;
