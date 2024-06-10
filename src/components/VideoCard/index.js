@@ -19,12 +19,12 @@ const VideoCard = props => {
   const {profileImageUrl, name} = channel
   return (
     <EachVideoCard>
-      <Link to={`/video/${id}`}>
+      <Link to={`/video/${id}`} style={{textDecoration: 'none'}}>
         <CustomImg src={thumbnailUrl} alt="" />
       </Link>
       <VideoDetails>
         <CustomChannelImg src={profileImageUrl} alt="" />
-        <Link to={`/video/${id}`}>
+        <Link to={`/video/${id}`} style={{textDecoration: 'none'}}>
           <TitleChannelContainer>
             <Title>{title}</Title>
             <ChannelViewsDate>

@@ -63,7 +63,7 @@ class Gaming extends Component {
       }))
 
       this.setState({gamingData, apiStatus: apiStatusConstants.success})
-    } else if (response.status !== 401) {
+    } else if (response.status === 401) {
       this.setState({
         apiStatus: apiStatusConstants.failure,
       })
@@ -82,7 +82,7 @@ class Gaming extends Component {
         </TopSection>
         <GamingCardContainer>
           {gamingData.map(game => (
-            <Link to={`/video/${game.id}`}>
+            <Link to={`/video/${game.id}`} style={{textDecoration: 'none'}}>
               <GamingCard>
                 <GamingCardImg src={game.thumbnailUrl} alt="" />
                 <GamingCardTitle>{game.title}</GamingCardTitle>
@@ -93,6 +93,10 @@ class Gaming extends Component {
         </GamingCardContainer>
       </GamingSubContainer>
     )
+  }
+
+  retryAgain = () => {
+    this.getGamingVideoData()
   }
 
   renderFailureView = () => (
@@ -106,7 +110,7 @@ class Gaming extends Component {
         We are having some trouble to complete your request.
       </FailurePara>
       <FailurePara>Please try again.</FailurePara>
-      <FailureRetryBtn>Retry</FailureRetryBtn>
+      <FailureRetryBtn onClick={this.retryAgain}>Retry</FailureRetryBtn>
     </FailureContainer>
   )
 

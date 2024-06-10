@@ -1,4 +1,4 @@
-import {Component} from 'react'
+import React, {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import {IoIosSearch} from 'react-icons/io'
 import Cookies from 'js-cookie'
@@ -37,8 +37,17 @@ class Home extends Component {
     apiStatus: apiStatusConstants.initial,
   }
 
+  searchInputRef = React.createRef()
+
   componentDidMount() {
     this.fetchHomeVideoList()
+    this.focusSearchInput()
+  }
+
+  focusSearchInput = () => {
+    if (this.searchInputRef.current) {
+      this.searchInputRef.current.focus()
+    }
   }
 
   fetchHomeVideoList = async () => {
@@ -75,7 +84,7 @@ class Home extends Component {
         filteredVideosList,
         apiStatus: apiStatusConstants.success,
       })
-    } else if (response.status !== 401) {
+    } else if (response.status === 401) {
       this.setState({
         apiStatus: apiStatusConstants.failure,
       })
@@ -99,14 +108,39 @@ class Home extends Component {
   homeListSection = () => {
     const {filteredVideosList, searchInput} = this.state
     console.log(searchInput)
-    return (
+    return filteredVideosList.length > 0 ? (
       <VideoCardContainer>
         {filteredVideosList.map(card => (
           <VideoCard card={card} key={card.id} />
         ))}
       </VideoCardContainer>
+    ) : (
+      this.renderNoSearchResultView()
     )
   }
+
+  retryAgain = () => {
+    this.fetchHomeVideoList()
+  }
+
+  retrySearchingAgain = () => {
+    this.focusSearchInput()
+    this.fetchHomeVideoList()
+  }
+
+  renderNoSearchResultView = () => (
+    <FailureContainer>
+      <FailureImg
+        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
+        alt="no videos"
+      />
+      <FailureHeading>No Search results found</FailureHeading>
+      <FailurePara>Try different key words or remove search filter</FailurePara>
+      <FailureRetryBtn onClick={this.retrySearchingAgain}>
+        Retry
+      </FailureRetryBtn>
+    </FailureContainer>
+  )
 
   renderFailureView = () => (
     <FailureContainer>
@@ -119,7 +153,7 @@ class Home extends Component {
         We are having some trouble to complete your request.
       </FailurePara>
       <FailurePara>Please try again.</FailurePara>
-      <FailureRetryBtn>Retry</FailureRetryBtn>
+      <FailureRetryBtn onClick={this.retryAgain}>Retry</FailureRetryBtn>
     </FailureContainer>
   )
 
@@ -152,6 +186,7 @@ class Home extends Component {
           <HomeVideosList>
             <SearchBar>
               <SearchInput
+                ref={this.searchInputRef}
                 type="search"
                 placeholder="Search"
                 onChange={this.changeSearchInput}

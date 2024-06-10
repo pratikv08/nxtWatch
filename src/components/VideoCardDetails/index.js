@@ -24,8 +24,10 @@ import {
   ChannelSubDetails,
   ChannelName,
   Subscribers,
-  Title,
+  TitleLg,
+  TitleSm,
   StyledBsDot,
+  VideoCardDetailsDescriptionContainerTop,
 } from './styledComponents'
 
 class VideoCardDetails extends Component {
@@ -124,56 +126,59 @@ class VideoCardDetails extends Component {
                       url={videoData.videoUrl}
                       controls
                       width="100%"
-                      height="500px"
+                      height="100%"
                     />
                   </VideoCardDetailsDescriptionVideo>
-                  <VideoCardDetailsDescriptionPara>
-                    {videoData.title}
-                  </VideoCardDetailsDescriptionPara>
-                  <VideoCardDetailsDescriptionDetailsContainer>
-                    <VideoCardDetailsDescriptionDetailsContainerTop>
-                      <Views>{`${videoData.viewCount} views`}</Views>
-                      <StyledBsDot />
-                      <Time>{videoData.publishedAt}</Time>
-                    </VideoCardDetailsDescriptionDetailsContainerTop>
-                    <VideoCardDetailsDescriptionDetailsContainerBottom>
-                      <LikeContainer
-                        onClick={this.handleLikes}
-                        style={{color: isLiked ? '#3b82f6' : 'black'}}
-                      >
-                        <AiOutlineLike size={24} />
-                        <LikePara>Like</LikePara>
-                      </LikeContainer>
-                      <LikeContainer
-                        onClick={this.handleDislikes}
-                        style={{color: isDisliked ? '#3b82f6' : 'black'}}
-                      >
-                        <AiOutlineDislike size={24} />
-                        <LikePara>Dislike</LikePara>
-                      </LikeContainer>
-                      <LikeContainer
-                        onClick={handleSaveVideo}
-                        style={{color: isVideoSaved ? '#3b82f6' : 'black'}}
-                      >
-                        <IoBookmarksOutline size={22} />
-                        <LikePara>{isVideoSaved ? 'Saved' : 'Save'}</LikePara>
-                      </LikeContainer>
-                    </VideoCardDetailsDescriptionDetailsContainerBottom>
-                  </VideoCardDetailsDescriptionDetailsContainer>
-                  <hr />
-                  <ChannelDetails>
-                    <CustomChannelImg
-                      src={videoData.channel.profileImageUrl}
-                      alt=""
-                    />
-                    <TitleChannelContainer>
-                      <ChannelSubDetails>
-                        <ChannelName>{videoData.channel.name}</ChannelName>
-                        <Subscribers>{`${videoData.channel.subscriberCount} subscribers`}</Subscribers>
-                      </ChannelSubDetails>
-                      <Title>{videoData.title}</Title>
-                    </TitleChannelContainer>
-                  </ChannelDetails>
+                  <VideoCardDetailsDescriptionContainerTop>
+                    <VideoCardDetailsDescriptionPara>
+                      {videoData.title}
+                    </VideoCardDetailsDescriptionPara>
+                    <VideoCardDetailsDescriptionDetailsContainer>
+                      <VideoCardDetailsDescriptionDetailsContainerTop>
+                        <Views>{`${videoData.viewCount} views`}</Views>
+                        <StyledBsDot />
+                        <Time>{videoData.publishedAt}</Time>
+                      </VideoCardDetailsDescriptionDetailsContainerTop>
+                      <VideoCardDetailsDescriptionDetailsContainerBottom>
+                        <LikeContainer
+                          onClick={this.handleLikes}
+                          style={{color: isLiked ? '#3b82f6' : 'black'}}
+                        >
+                          <AiOutlineLike size={24} />
+                          <LikePara>Like</LikePara>
+                        </LikeContainer>
+                        <LikeContainer
+                          onClick={this.handleDislikes}
+                          style={{color: isDisliked ? '#3b82f6' : 'black'}}
+                        >
+                          <AiOutlineDislike size={24} />
+                          <LikePara>Dislike</LikePara>
+                        </LikeContainer>
+                        <LikeContainer
+                          onClick={handleSaveVideo}
+                          style={{color: isVideoSaved ? '#3b82f6' : 'black'}}
+                        >
+                          <IoBookmarksOutline size={22} />
+                          <LikePara>{isVideoSaved ? 'Saved' : 'Save'}</LikePara>
+                        </LikeContainer>
+                      </VideoCardDetailsDescriptionDetailsContainerBottom>
+                    </VideoCardDetailsDescriptionDetailsContainer>
+                    <hr />
+                    <ChannelDetails>
+                      <CustomChannelImg
+                        src={videoData.channel.profileImageUrl}
+                        alt=""
+                      />
+                      <TitleChannelContainer>
+                        <ChannelSubDetails>
+                          <ChannelName>{videoData.channel.name}</ChannelName>
+                          <Subscribers>{`${videoData.channel.subscriberCount} subscribers`}</Subscribers>
+                        </ChannelSubDetails>
+                        <TitleLg>{videoData.description}</TitleLg>
+                      </TitleChannelContainer>
+                    </ChannelDetails>
+                    <TitleSm>{videoData.description}</TitleSm>
+                  </VideoCardDetailsDescriptionContainerTop>
                 </VideoCardDetailsDescriptionContainer>
               )
             }}

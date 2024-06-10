@@ -10,22 +10,47 @@ export const VideoCardDetailsContainer = styled.div`
   width: 100%;
 `
 export const VideoCardDetailsDescriptionContainer = styled.div`
-  width: 79%;
-  padding: 28px;
+  width: 100%;
+  padding: 0px;
   padding-top: 16px;
   min-height: 150vh;
+  @media screen and (min-width: 768px) {
+    width: 79%;
+    padding: 28px;
+  }
+`
+export const VideoCardDetailsDescriptionContainerTop = styled.div`
+  padding: 12px;
+  @media screen and (min-width: 768px) {
+    padding: 28px;
+  }
 `
 export const VideoCardDetailsDescriptionVideo = styled.div`
   width: 100%;
-  height: auto;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
+  height: 260px;
+  @media screen and (min-width: 768px) {
+    height: 400px;
+  }
+  @media screen and (min-width: 768px) {
+    height: 500px;
+  }
 `
 
-export const VideoCardDetailsDescriptionPara = styled.p``
+export const VideoCardDetailsDescriptionPara = styled.p`
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: 20px;
+`
 export const VideoCardDetailsDescriptionDetailsContainer = styled.div`
+  flex-direction: column;
+  align-items: flex-start;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 `
 export const VideoCardDetailsDescriptionDetailsContainerTop = styled.div`
   display: flex;
@@ -55,8 +80,13 @@ export const ChannelDetails = styled.div`
   align-items: flex-start;
 `
 export const CustomChannelImg = styled.img`
-  width: 60px;
-  margin-right: 30px;
+  width: 50px;
+  margin-right: 24px;
+
+  @media screen and (min-width: 768px) {
+    width: 60px;
+    margin-right: 30px;
+  }
 `
 export const TitleChannelContainer = styled.div``
 export const ChannelSubDetails = styled.div``
@@ -68,7 +98,18 @@ export const Subscribers = styled.p`
   margin-top: 8px;
   margin-bottom: 24px;
 `
-export const Title = styled.p``
+export const TitleLg = styled.p`
+  display: none;
+  @media screen and (min-width: 768px) {
+    display: inline;
+  }
+`
+export const TitleSm = styled.p`
+  display: inline;
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
+`
 
 export const StyledBsDot = styled(BsDot)`
   font-size: 18px;

@@ -65,3 +65,29 @@ export const NavMenuLogoutButton = styled.button`
   font-weight: 500;
   border-radius: 2px;
 `
+
+export const MobileSidebarContainer = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 250px;
+  background-color: #ffffff;
+  z-index: 1000;
+  @media (min-width: 768px) {
+    display: none;
+  }
+`
+
+export const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  @media (min-width: 768px) {
+    display: none;
+  }
+`

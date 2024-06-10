@@ -18,20 +18,39 @@ import {
   SavedVideoCardViewTime,
   View,
   Time,
+  NoSavedVideosContainer,
+  NoSavedVideosImg,
+  NoSavedVideosHeading,
+  NoSavedVideosPara,
+  SavedVideoCardChannelImg,
+  SavedVideoCardTitleNameViewTimeContainer,
+  SavedVideoCardNameViewTimeContainer,
 } from './styledComponents'
 
 class SavedVideos extends Component {
+  renderFailureView = () => (
+    <NoSavedVideosContainer>
+      <NoSavedVideosImg
+        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-saved-videos-img.png"
+        alt="no-saved-videos"
+      />
+      <NoSavedVideosHeading>No saved videos found</NoSavedVideosHeading>
+      <NoSavedVideosPara>
+        You can save your videos while watching them
+      </NoSavedVideosPara>
+    </NoSavedVideosContainer>
+  )
+
   render() {
     return (
       <>
         <Header />
         <SavedVideosContainer>
           <SideBar />
-
           <NxtWatchContext.Consumer>
             {value => {
               const {savedVideos} = value
-              return (
+              return savedVideos.length > 0 ? (
                 <SavedVideosSubContainer>
                   <TopSection>
                     <FireContainer>
@@ -44,19 +63,31 @@ class SavedVideos extends Component {
                       <SavedVideoCard>
                         <SavedVideosCardImg src={vid.thumbnailUrl} alt="" />
                         <SavedVideoCardDetails>
-                          <SavedVideoCardTitle>{vid.title}</SavedVideoCardTitle>
-                          <SavedVideoCardName>
-                            {vid.channel.name}
-                          </SavedVideoCardName>
-                          <SavedVideoCardViewTime>
-                            <View>{`${vid.viewCount} views`}</View>
-                            <Time>{vid.publishedAt}</Time>
-                          </SavedVideoCardViewTime>
+                          <SavedVideoCardChannelImg
+                            src={vid.channel.profileImageUrl}
+                            alt=""
+                          />
+                          <SavedVideoCardTitleNameViewTimeContainer>
+                            <SavedVideoCardTitle>
+                              {vid.title}
+                            </SavedVideoCardTitle>
+                            <SavedVideoCardNameViewTimeContainer>
+                              <SavedVideoCardName>
+                                {vid.channel.name}
+                              </SavedVideoCardName>
+                              <SavedVideoCardViewTime>
+                                <View>{`${vid.viewCount} views`}</View>
+                                <Time>{vid.publishedAt}</Time>
+                              </SavedVideoCardViewTime>
+                            </SavedVideoCardNameViewTimeContainer>
+                          </SavedVideoCardTitleNameViewTimeContainer>
                         </SavedVideoCardDetails>
                       </SavedVideoCard>
                     ))}
                   </SavedVideoCardContainer>
                 </SavedVideosSubContainer>
+              ) : (
+                this.renderFailureView()
               )
             }}
           </NxtWatchContext.Consumer>

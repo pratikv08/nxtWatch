@@ -19,7 +19,6 @@ import {
   TrendingCardViewTime,
   TrendingCardName,
   View,
-  Name,
   Time,
   StyledBsDot,
   LoaderContainer,
@@ -28,6 +27,10 @@ import {
   FailureHeading,
   FailurePara,
   FailureRetryBtn,
+  TrendingCardChannelImg,
+  TrendingCardViewTimeNameTitleContainer,
+  TrendingCardViewTimeNameContainer,
+  StyledBsDot1,
 } from './styledComponents'
 
 const apiStatusConstants = {
@@ -79,7 +82,7 @@ class Trending extends Component {
         trendingData,
         apiStatus: apiStatusConstants.success,
       })
-    } else if (response.status !== 401) {
+    } else if (response.status === 401) {
       this.setState({
         apiStatus: apiStatusConstants.failure,
       })
@@ -99,18 +102,27 @@ class Trending extends Component {
         <TrendingCardContainer>
           {trendingData.map(vid => (
             <TrendingCard>
-              <Link to={`/video/${vid.id}`}>
+              <Link to={`/video/${vid.id}`} style={{textDecoration: 'none'}}>
                 <TrendingCardImg src={vid.thumbnailUrl} alt="" />
               </Link>
-              <Link to={`/video/${vid.id}`}>
+              <Link to={`/video/${vid.id}`} style={{textDecoration: 'none'}}>
                 <TrendingCardDetails>
-                  <TrendingCardTitle>{vid.title}</TrendingCardTitle>
-                  <TrendingCardName>{vid.channel.name}</TrendingCardName>
-                  <TrendingCardViewTime>
-                    <View>{`${vid.viewCount} views`}</View>
-                    <StyledBsDot />
-                    <Time>{vid.publishedAt}</Time>
-                  </TrendingCardViewTime>
+                  <TrendingCardChannelImg
+                    src={vid.channel.profileImageUrl}
+                    alt=""
+                  />
+                  <TrendingCardViewTimeNameTitleContainer>
+                    <TrendingCardTitle>{vid.title}</TrendingCardTitle>
+                    <TrendingCardViewTimeNameContainer>
+                      <TrendingCardName>{vid.channel.name}</TrendingCardName>
+                      <StyledBsDot1 />
+                      <TrendingCardViewTime>
+                        <View>{`${vid.viewCount} views`}</View>
+                        <StyledBsDot />
+                        <Time>{vid.publishedAt}</Time>
+                      </TrendingCardViewTime>
+                    </TrendingCardViewTimeNameContainer>
+                  </TrendingCardViewTimeNameTitleContainer>
                 </TrendingCardDetails>
               </Link>
             </TrendingCard>
@@ -118,6 +130,10 @@ class Trending extends Component {
         </TrendingCardContainer>
       </TrendingContainerSubContainer>
     )
+  }
+
+  retryAgain = () => {
+    this.getTrendingVideo()
   }
 
   renderFailureView = () => (
@@ -131,7 +147,7 @@ class Trending extends Component {
         We are having some trouble to complete your request.
       </FailurePara>
       <FailurePara>Please try again.</FailurePara>
-      <FailureRetryBtn>Retry</FailureRetryBtn>
+      <FailureRetryBtn onClick={this.retryAgain}>Retry</FailureRetryBtn>
     </FailureContainer>
   )
 

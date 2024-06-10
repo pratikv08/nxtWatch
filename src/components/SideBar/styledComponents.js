@@ -12,6 +12,10 @@ export const SideBarContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  display: none;
+  @media screen and (min-width: 768px) {
+    display: flex;
+  }
 `
 export const SideBarListContainer = styled.ul`
   padding-left: 0px;
