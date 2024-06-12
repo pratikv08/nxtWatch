@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import {BsDot} from 'react-icons/bs'
 
 export const SavedVideosContainer = styled.div`
   min-height: 120vh;
@@ -6,6 +7,7 @@ export const SavedVideosContainer = styled.div`
 `
 export const SavedVideosSubContainer = styled.div`
   width: 100%;
+  background-color: ${props => (props.bgColor ? '#0f0f0f' : '#f9f9f9')};
   @media screen and (min-width: 768px) {
     width: 79%;
   }
@@ -15,7 +17,7 @@ export const TrendingContainerSubContainer = styled.div``
 export const TopSection = styled.div`
   display: flex;
   align-items: center;
-  background-color: #ebebeb;
+  background-color: ${props => (props.bgColor ? '#212121' : '#ebebeb')};
   padding: 12px 28px;
   @media screen and (min-width: 768px) {
     padding: 4px 40px;
@@ -26,13 +28,14 @@ export const FireContainer = styled.div`
   border-radius: 100%;
   margin-right: 20px;
   padding: 4px 6px;
-  background: #d7dfe9;
+  background: ${props => (props.bgColor ? '#0f0f0f' : '#d7dfe9')};
   @media screen and (min-width: 768px) {
     padding: 12px 13px;
   }
 `
 export const CustomHeading = styled.h1`
   font-size: 20px;
+  color: ${props => (props.color ? '#f1f5f9' : ' #181818')};
   @media screen and (min-width: 768px) {
     font-size: 30px;
   }
@@ -40,7 +43,7 @@ export const CustomHeading = styled.h1`
 export const SavedVideoCardContainer = styled.ul`
   list-style-type: none;
   padding-top: 24px;
-  padding: 24px 16px;
+  padding: 24px 0px;
   @media screen and (min-width: 576px) {
     padding: 24px 24px;
   }
@@ -70,6 +73,7 @@ export const SavedVideoCardDetails = styled.div`
   margin-top: 12px;
   flex-direction: row;
   align-items: flex-start;
+  padding: 4px 16px;
   @media screen and (min-width: 576px) {
     margin-top: 0px;
   }
@@ -97,6 +101,7 @@ export const SavedVideoCardNameViewTimeContainer = styled.div`
 `
 
 export const SavedVideoCardTitle = styled.h4`
+  color: ${props => (props.color ? '#f1f5f9' : ' #181818')};
   margin-bottom: 8px;
   margin-top: 0px;
   font-size: 17px;
@@ -108,21 +113,41 @@ export const SavedVideoCardTitle = styled.h4`
 export const SavedVideoCardName = styled.p`
   margin-bottom: 0px;
   margin-top: 0px;
-  margin-right: 18px;
+  margin-right: 6px;
+  color: #64748b;
+  font-size: 14px;
+  @media screen and (min-width: 576px) {
+    font-size: 18px;
+  }
 `
 export const SavedVideoCardViewTime = styled.div`
   display: flex;
   align-items: center;
+  color: #64748b;
+  font-size: 14px;
   @media screen and (min-width: 576px) {
     margin-top: 10px;
+    font-size: 16px;
   }
 `
 export const View = styled.p`
-  margin-right: 18px;
+  margin-right: 6px;
   margin-top: 0px;
 `
 export const Time = styled.p`
   margin-top: 0px;
+`
+export const StyledBsDot1 = styled(BsDot)`
+  font-size: 15px;
+  margin-top: 4px;
+  color: #64748b;
+  @media screen and (min-width: 576px) {
+    display: none;
+  }
+`
+export const StyledBsDot = styled(BsDot)`
+  font-size: 18px;
+  margin-bottom: 12px;
 `
 
 export const NoSavedVideosContainer = styled.div`
@@ -132,6 +157,7 @@ export const NoSavedVideosContainer = styled.div`
   width: 100%;
   padding: 16px;
   padding-top: 60px;
+  background-color: ${props => (props.bgColor ? '#0f0f0f' : '#f9f9f9')};
   @media screen and (min-width: 576px) {
     padding-top: 70px;
   }
@@ -155,6 +181,7 @@ export const NoSavedVideosHeading = styled.h2`
   font-weight: 600;
   font-size: 23px;
   text-align: center;
+  color: ${props => (props.color ? '#f8fafc' : '#181818')};
   @media screen and (min-width: 576px) {
     font-size: 28px;
   }
@@ -167,6 +194,7 @@ export const NoSavedVideosPara = styled.p`
   margin-bottom: 4px;
   font-size: 16px;
   text-align: center;
+  color: ${props => (props.color ? '#94a3b8' : '#181818')};
   @media screen and (min-width: 576px) {
     font-size: 20px;
   }

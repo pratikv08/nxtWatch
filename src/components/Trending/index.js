@@ -5,6 +5,8 @@ import {Link} from 'react-router-dom'
 import {AiFillFire} from 'react-icons/ai'
 import SideBar from '../SideBar'
 import Header from '../Header'
+import FailureStatus from '../FailureStatus'
+import NxtWatchContext from '../../context/NxtWatchContext'
 import {
   TrendingContainer,
   TrendingContainerSubContainer,
@@ -41,7 +43,10 @@ const apiStatusConstants = {
 }
 
 class Trending extends Component {
-  state = {trendingData: [], apiStatus: apiStatusConstants.initial}
+  state = {
+    trendingData: [],
+    apiStatus: apiStatusConstants.initial,
+  }
 
   componentDidMount() {
     this.getTrendingVideo()
@@ -92,43 +97,60 @@ class Trending extends Component {
   trendingListSection = () => {
     const {trendingData} = this.state
     return (
-      <TrendingContainerSubContainer>
-        <TopSection>
-          <FireContainer>
-            <AiFillFire size={35} style={{color: 'red'}} />
-          </FireContainer>
-          <CustomHeading>Trending</CustomHeading>
-        </TopSection>
-        <TrendingCardContainer>
-          {trendingData.map(vid => (
-            <TrendingCard>
-              <Link to={`/video/${vid.id}`} style={{textDecoration: 'none'}}>
-                <TrendingCardImg src={vid.thumbnailUrl} alt="" />
-              </Link>
-              <Link to={`/video/${vid.id}`} style={{textDecoration: 'none'}}>
-                <TrendingCardDetails>
-                  <TrendingCardChannelImg
-                    src={vid.channel.profileImageUrl}
-                    alt=""
-                  />
-                  <TrendingCardViewTimeNameTitleContainer>
-                    <TrendingCardTitle>{vid.title}</TrendingCardTitle>
-                    <TrendingCardViewTimeNameContainer>
-                      <TrendingCardName>{vid.channel.name}</TrendingCardName>
-                      <StyledBsDot1 />
-                      <TrendingCardViewTime>
-                        <View>{`${vid.viewCount} views`}</View>
-                        <StyledBsDot />
-                        <Time>{vid.publishedAt}</Time>
-                      </TrendingCardViewTime>
-                    </TrendingCardViewTimeNameContainer>
-                  </TrendingCardViewTimeNameTitleContainer>
-                </TrendingCardDetails>
-              </Link>
-            </TrendingCard>
-          ))}
-        </TrendingCardContainer>
-      </TrendingContainerSubContainer>
+      <NxtWatchContext.Consumer>
+        {value => {
+          const {isDarkTheme} = value
+          return (
+            <TrendingContainerSubContainer>
+              <TopSection bgColor={isDarkTheme}>
+                <FireContainer bgColor={isDarkTheme}>
+                  <AiFillFire size={35} style={{color: 'red'}} />
+                </FireContainer>
+                <CustomHeading color={isDarkTheme}>Trending</CustomHeading>
+              </TopSection>
+              <TrendingCardContainer bgColor={isDarkTheme}>
+                {trendingData.map(vid => (
+                  <TrendingCard>
+                    <Link
+                      to={`/video/${vid.id}`}
+                      style={{textDecoration: 'none'}}
+                    >
+                      <TrendingCardImg src={vid.thumbnailUrl} alt="" />
+                    </Link>
+                    <Link
+                      to={`/video/${vid.id}`}
+                      style={{textDecoration: 'none'}}
+                    >
+                      <TrendingCardDetails>
+                        <TrendingCardChannelImg
+                          src={vid.channel.profileImageUrl}
+                          alt=""
+                        />
+                        <TrendingCardViewTimeNameTitleContainer>
+                          <TrendingCardTitle color={isDarkTheme}>
+                            {vid.title}
+                          </TrendingCardTitle>
+                          <TrendingCardViewTimeNameContainer>
+                            <TrendingCardName>
+                              {vid.channel.name}
+                            </TrendingCardName>
+                            <StyledBsDot1 />
+                            <TrendingCardViewTime>
+                              <View>{`${vid.viewCount} views`}</View>
+                              <StyledBsDot />
+                              <Time>{vid.publishedAt}</Time>
+                            </TrendingCardViewTime>
+                          </TrendingCardViewTimeNameContainer>
+                        </TrendingCardViewTimeNameTitleContainer>
+                      </TrendingCardDetails>
+                    </Link>
+                  </TrendingCard>
+                ))}
+              </TrendingCardContainer>
+            </TrendingContainerSubContainer>
+          )
+        }}
+      </NxtWatchContext.Consumer>
     )
   }
 
@@ -136,20 +158,7 @@ class Trending extends Component {
     this.getTrendingVideo()
   }
 
-  renderFailureView = () => (
-    <FailureContainer>
-      <FailureImg
-        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
-        alt="failure"
-      />
-      <FailureHeading>Oops! Something Went Wrong</FailureHeading>
-      <FailurePara>
-        We are having some trouble to complete your request.
-      </FailurePara>
-      <FailurePara>Please try again.</FailurePara>
-      <FailureRetryBtn onClick={this.retryAgain}>Retry</FailureRetryBtn>
-    </FailureContainer>
-  )
+  renderFailureView = () => <FailureStatus onRetry={this.retryAgain} />
 
   renderLoader = () => (
     <LoaderContainer data-testid="loader">

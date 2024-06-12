@@ -15,6 +15,7 @@ import {
   FooterImg,
   FooterPara,
 } from './styledComponents'
+import NxtWatchContext from '../../context/NxtWatchContext'
 
 class SideBar extends Component {
   state = {
@@ -31,54 +32,62 @@ class SideBar extends Component {
     const {pathname} = location
 
     return (
-      <SideBarContainer>
-        <SideBarListContainer>
-          <Link to="/" style={{textDecoration: 'none'}}>
-            <SideBarList section={pathname === '/'}>
-              <StyledHomeLogo color={pathname === '/'} />
-              <CustomMenu>Home</CustomMenu>
-            </SideBarList>
-          </Link>
-          <Link to="/trending" style={{textDecoration: 'none'}}>
-            <SideBarList section={pathname === '/trending'}>
-              <StyledTrendLogo color={pathname === '/trending'} />
-              <CustomMenu>Trending</CustomMenu>
-            </SideBarList>
-          </Link>
-          <Link to="/gaming" style={{textDecoration: 'none'}}>
-            <SideBarList section={pathname === '/gaming'}>
-              <StyledGameLogo color={pathname === '/gaming'} />
-              <CustomMenu>Gaming</CustomMenu>
-            </SideBarList>
-          </Link>
-          <Link to="/saved-videos" style={{textDecoration: 'none'}}>
-            <SideBarList section={pathname === '/saved-videos'}>
-              <StyledSavedVLogo color={pathname === '/saved-videos'} />
-              <CustomMenu>Saved videos</CustomMenu>
-            </SideBarList>
-          </Link>
-        </SideBarListContainer>
-        <Footer>
-          <FooterHeading>CONTACT US</FooterHeading>
-          <FollowList>
-            <FooterImg
-              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-facebook-logo-img.png"
-              alt="facebook logo"
-            />
-            <FooterImg
-              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-twitter-logo-img.png"
-              alt="twitter logo"
-            />
-            <FooterImg
-              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-linked-in-logo-img.png"
-              alt="linked in logo"
-            />
-          </FollowList>
-          <FooterPara>
-            Enjoy! Now to see your channels recommendations!
-          </FooterPara>
-        </Footer>
-      </SideBarContainer>
+      <NxtWatchContext.Consumer>
+        {value => {
+          const {isDarkTheme} = value
+
+          return (
+            <SideBarContainer bgColor={isDarkTheme}>
+              <SideBarListContainer>
+                <Link to="/" style={{textDecoration: 'none'}}>
+                  <SideBarList section={pathname === '/'}>
+                    <StyledHomeLogo color={pathname === '/'} />
+                    <CustomMenu color={isDarkTheme}>Home</CustomMenu>
+                  </SideBarList>
+                </Link>
+                <Link to="/trending" style={{textDecoration: 'none'}}>
+                  <SideBarList section={pathname === '/trending'}>
+                    <StyledTrendLogo color={pathname === '/trending'} />
+                    <CustomMenu color={isDarkTheme}>Trending</CustomMenu>
+                  </SideBarList>
+                </Link>
+                <Link to="/gaming" style={{textDecoration: 'none'}}>
+                  <SideBarList section={pathname === '/gaming'}>
+                    <StyledGameLogo color={pathname === '/gaming'} />
+                    <CustomMenu color={isDarkTheme}>Gaming</CustomMenu>
+                  </SideBarList>
+                </Link>
+                <Link to="/saved-videos" style={{textDecoration: 'none'}}>
+                  <SideBarList section={pathname === '/saved-videos'}>
+                    <StyledSavedVLogo color={pathname === '/saved-videos'} />
+                    <CustomMenu color={isDarkTheme}>Saved videos</CustomMenu>
+                  </SideBarList>
+                </Link>
+              </SideBarListContainer>
+              <Footer>
+                <FooterHeading color={isDarkTheme}>CONTACT US</FooterHeading>
+                <FollowList>
+                  <FooterImg
+                    src="https://assets.ccbp.in/frontend/react-js/nxt-watch-facebook-logo-img.png"
+                    alt="facebook logo"
+                  />
+                  <FooterImg
+                    src="https://assets.ccbp.in/frontend/react-js/nxt-watch-twitter-logo-img.png"
+                    alt="twitter logo"
+                  />
+                  <FooterImg
+                    src="https://assets.ccbp.in/frontend/react-js/nxt-watch-linked-in-logo-img.png"
+                    alt="linked in logo"
+                  />
+                </FollowList>
+                <FooterPara color={isDarkTheme}>
+                  Enjoy! Now to see your channels recommendations!
+                </FooterPara>
+              </Footer>
+            </SideBarContainer>
+          )
+        }}
+      </NxtWatchContext.Consumer>
     )
   }
 }

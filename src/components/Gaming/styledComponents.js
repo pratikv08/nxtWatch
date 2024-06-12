@@ -13,7 +13,7 @@ export const GamingSubContainer = styled.div`
 export const TopSection = styled.div`
   display: flex;
   align-items: center;
-  background-color: #ebebeb;
+  background-color: ${props => (props.bgColor ? '#212121' : '#ebebeb')};
   padding: 12px 28px;
   @media screen and (min-width: 768px) {
     padding: 4px 40px;
@@ -24,13 +24,14 @@ export const FireContainer = styled.div`
   border-radius: 100%;
   margin-right: 20px;
   padding: 4px 6px;
-  background: #d7dfe9;
+  background: ${props => (props.bgColor ? '#0f0f0f' : '#d7dfe9')};
   @media screen and (min-width: 768px) {
     padding: 12px 13px;
   }
 `
 export const CustomHeading = styled.h1`
   font-size: 20px;
+  color: ${props => (props.color ? '#f1f5f9' : ' #181818')};
   @media screen and (min-width: 768px) {
     font-size: 30px;
   }
@@ -44,8 +45,9 @@ export const GamingCardContainer = styled.ul`
   overflow: auto;
   height: 100vh;
   margin-top: 0px;
-  padding: 28px 12px;
+  padding: 28px 16px;
   width: 100%;
+  background-color: ${props => (props.bgColor ? '#0f0f0f' : '#f9f9f9')};
   @media screen and (min-width: 576px) {
     padding: 28px 24px;
     gap: 16px;
@@ -72,9 +74,12 @@ export const GamingCardImg = styled.img`
 `
 export const GamingCardTitle = styled.p`
   margin-bottom: 0px;
+  font-weight: 600;
+  color: ${props => (props.color ? '#f1f5f9' : ' #181818')};
 `
 export const View = styled.p`
   margin-top: 4px;
+  color: #64748b;
 `
 export const LoaderContainer = styled.div`
   display: flex;

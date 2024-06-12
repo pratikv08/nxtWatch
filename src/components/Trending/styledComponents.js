@@ -15,7 +15,7 @@ export const TrendingContainerSubContainer = styled.div`
 export const TopSection = styled.div`
   display: flex;
   align-items: center;
-  background-color: #ebebeb;
+  background-color: ${props => (props.bgColor ? '#212121' : '#ebebeb')};
   padding: 12px 20px;
   @media screen and (min-width: 768px) {
     padding: 4px 40px;
@@ -26,24 +26,27 @@ export const FireContainer = styled.div`
   border-radius: 100%;
   margin-right: 20px;
   padding: 4px 6px;
-  background: #d7dfe9;
+  background: ${props => (props.bgColor ? '#0f0f0f' : '#d7dfe9')};
   @media screen and (min-width: 768px) {
     padding: 12px 13px;
   }
 `
 export const CustomHeading = styled.h1`
   font-size: 20px;
+  color: ${props => (props.color ? '#f1f5f9' : ' #181818')};
   @media screen and (min-width: 768px) {
     font-size: 30px;
   }
 `
 export const TrendingCardContainer = styled.ul`
-  padding: 16px;
+  // padding: 16px;
+  padding-left: 0px;
   padding-top: 32px;
   height:100vh;
   overflow:auto;
   margin-top: 0px;
   list-style-type:none;
+  background-color:${props => (props.bgColor ? '#0f0f0f' : '#f9f9f9')};
   @media screen and (min-width:576px){
      padding: 20px;
   }
@@ -80,13 +83,15 @@ export const TrendingCardImg = styled.img`
 export const TrendingCardDetails = styled.div`
   display: flex;
   align-items: flex-start;
-  margin-top: 6px;
+  margin-top: 0px;
+  padding: 8px 12px;
   @media screen and (min-width: 576px) {
     margin-top: 0px;
+    padding: 0px 0px;
   }
 `
 export const TrendingCardChannelImg = styled.img`
-  width: 45px;
+  width: 38px;
   border-radius: 50%;
   margin-right: 16px;
   @media screen and (min-width: 576px) {
@@ -108,6 +113,7 @@ export const TrendingCardTitle = styled.h3`
   font-weight: 500;
   margin-top: 0px;
   margin-bottom: 0px;
+  color: ${props => (props.color ? '#f1f5f9' : ' #181818')};
   @media screen and (min-width: 576px) {
     font-size: 18px;
     margin-bottom: 0px;
@@ -120,12 +126,13 @@ export const TrendingCardTitle = styled.h3`
 export const TrendingCardViewTime = styled.div`
   display: flex;
   align-items: center;
+  color: #64748b;
 `
 export const TrendingCardName = styled.p`
   font-size: 14px;
   margin-bottom: 2px;
   margin-top: 0px;
-
+  color: #64748b;
   @media screen and (min-width: 576px) {
     font-size: 18px;
     margin-bottom: 8px;
@@ -162,6 +169,7 @@ export const Time = styled.p`
 export const StyledBsDot1 = styled(BsDot)`
   font-size: 18px;
   // margin-bottom: 8px;
+  color: #64748b;
   @media screen and (min-width: 576px) {
     display: none;
   }

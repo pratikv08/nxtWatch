@@ -7,6 +7,8 @@ import VideoCard from '../VideoCard'
 import SideBar from '../SideBar'
 import Trending from '../Trending'
 import Gaming from '../Gaming'
+import FailureStatus from '../FailureStatus'
+import NxtWatchContext from '../../context/NxtWatchContext'
 import {
   HomeVideosList,
   SearchBar,
@@ -20,6 +22,12 @@ import {
   FailureHeading,
   FailurePara,
   FailureRetryBtn,
+  BannerContainer,
+  BannerContent,
+  BannerImg,
+  BannerHeading,
+  BannerBtn,
+  BannerCloseBtn,
 } from './styledComponents'
 
 const apiStatusConstants = {
@@ -35,6 +43,7 @@ class Home extends Component {
     activeSection: 'Home',
     searchInput: '',
     apiStatus: apiStatusConstants.initial,
+    showBanner: true,
   }
 
   searchInputRef = React.createRef()
@@ -105,6 +114,26 @@ class Home extends Component {
     }
   }
 
+  closeBanner = () => {
+    this.setState({showBanner: false})
+  }
+
+  renderBanner = () => (
+    <BannerContainer>
+      <BannerContent>
+        <BannerImg
+          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
+          alt="logo"
+        />
+        <BannerHeading>
+          Buy Nxt Watch Premium prepaid plans with UPI
+        </BannerHeading>
+        <BannerBtn>GET IT NOW</BannerBtn>
+      </BannerContent>
+      <BannerCloseBtn onClick={this.closeBanner}>x</BannerCloseBtn>
+    </BannerContainer>
+  )
+
   homeListSection = () => {
     const {filteredVideosList, searchInput} = this.state
     console.log(searchInput)
@@ -129,33 +158,30 @@ class Home extends Component {
   }
 
   renderNoSearchResultView = () => (
-    <FailureContainer>
-      <FailureImg
-        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
-        alt="no videos"
-      />
-      <FailureHeading>No Search results found</FailureHeading>
-      <FailurePara>Try different key words or remove search filter</FailurePara>
-      <FailureRetryBtn onClick={this.retrySearchingAgain}>
-        Retry
-      </FailureRetryBtn>
-    </FailureContainer>
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {isDarkTheme} = value
+        const failureImg =
+          'https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png'
+        return (
+          <FailureContainer bgColor={isDarkTheme}>
+            <FailureImg src={failureImg} alt="no videos" />
+            <FailureHeading color={isDarkTheme}>
+              No Search results found
+            </FailureHeading>
+            <FailurePara color={isDarkTheme}>
+              Try different key words or remove search filter
+            </FailurePara>
+            <FailureRetryBtn onClick={this.retrySearchingAgain}>
+              Retry
+            </FailureRetryBtn>
+          </FailureContainer>
+        )
+      }}
+    </NxtWatchContext.Consumer>
   )
 
-  renderFailureView = () => (
-    <FailureContainer>
-      <FailureImg
-        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
-        alt="failure"
-      />
-      <FailureHeading>Oops! Something Went Wrong</FailureHeading>
-      <FailurePara>
-        We are having some trouble to complete your request.
-      </FailurePara>
-      <FailurePara>Please try again.</FailurePara>
-      <FailureRetryBtn onClick={this.retryAgain}>Retry</FailureRetryBtn>
-    </FailureContainer>
-  )
+  renderFailureView = () => <FailureStatus onRetry={this.retryAgain} />
 
   renderLoader = () => (
     <LoaderContainer data-testid="loader">
@@ -178,26 +204,39 @@ class Home extends Component {
   }
 
   render() {
+    const {showBanner} = this.state
     return (
       <>
         <Header />
         <HomeContainer>
           <SideBar />
-          <HomeVideosList>
-            <SearchBar>
-              <SearchInput
-                ref={this.searchInputRef}
-                type="search"
-                placeholder="Search"
-                onChange={this.changeSearchInput}
-                onKeyDown={this.handleKeyDown}
-              />
-              <SearchIconContainer onClick={this.searchVideos}>
-                <IoIosSearch />
-              </SearchIconContainer>
-            </SearchBar>
-            {this.renderHomeSection()}
-          </HomeVideosList>
+          <NxtWatchContext.Consumer>
+            {value => {
+              const {isDarkTheme} = value
+              return (
+                <HomeVideosList bgColor={isDarkTheme}>
+                  {showBanner && this.renderBanner()}
+                  <SearchBar>
+                    <SearchInput
+                      ref={this.searchInputRef}
+                      type="search"
+                      placeholder="Search"
+                      onChange={this.changeSearchInput}
+                      onKeyDown={this.handleKeyDown}
+                      color={isDarkTheme}
+                    />
+                    <SearchIconContainer
+                      bgColor={isDarkTheme}
+                      onClick={this.searchVideos}
+                    >
+                      <IoIosSearch />
+                    </SearchIconContainer>
+                  </SearchBar>
+                  {this.renderHomeSection()}
+                </HomeVideosList>
+              )
+            }}
+          </NxtWatchContext.Consumer>
         </HomeContainer>
       </>
     )

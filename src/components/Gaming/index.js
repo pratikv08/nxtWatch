@@ -5,6 +5,8 @@ import {SiYoutubegaming} from 'react-icons/si'
 import {Link} from 'react-router-dom'
 import SideBar from '../SideBar'
 import Header from '../Header'
+import FailureStatus from '../FailureStatus'
+import NxtWatchContext from '../../context/NxtWatchContext'
 import {
   GamingContainer,
   GamingSubContainer,
@@ -73,25 +75,37 @@ class Gaming extends Component {
   gamingListSection = () => {
     const {gamingData} = this.state
     return (
-      <GamingSubContainer>
-        <TopSection>
-          <FireContainer>
-            <SiYoutubegaming size={35} style={{color: 'red'}} />
-          </FireContainer>
-          <CustomHeading>Gaming</CustomHeading>
-        </TopSection>
-        <GamingCardContainer>
-          {gamingData.map(game => (
-            <Link to={`/video/${game.id}`} style={{textDecoration: 'none'}}>
-              <GamingCard>
-                <GamingCardImg src={game.thumbnailUrl} alt="" />
-                <GamingCardTitle>{game.title}</GamingCardTitle>
-                <View>{`${game.viewCount} Watching Worlwide`}</View>
-              </GamingCard>
-            </Link>
-          ))}
-        </GamingCardContainer>
-      </GamingSubContainer>
+      <NxtWatchContext.Consumer>
+        {value => {
+          const {isDarkTheme} = value
+          return (
+            <GamingSubContainer bgColor={isDarkTheme}>
+              <TopSection bgColor={isDarkTheme}>
+                <FireContainer bgColor={isDarkTheme}>
+                  <SiYoutubegaming size={35} style={{color: 'red'}} />
+                </FireContainer>
+                <CustomHeading color={isDarkTheme}>Gaming</CustomHeading>
+              </TopSection>
+              <GamingCardContainer bgColor={isDarkTheme}>
+                {gamingData.map(game => (
+                  <Link
+                    to={`/video/${game.id}`}
+                    style={{textDecoration: 'none'}}
+                  >
+                    <GamingCard>
+                      <GamingCardImg src={game.thumbnailUrl} alt="" />
+                      <GamingCardTitle color={isDarkTheme}>
+                        {game.title}
+                      </GamingCardTitle>
+                      <View>{`${game.viewCount} Watching Worlwide`}</View>
+                    </GamingCard>
+                  </Link>
+                ))}
+              </GamingCardContainer>
+            </GamingSubContainer>
+          )
+        }}
+      </NxtWatchContext.Consumer>
     )
   }
 
@@ -99,20 +113,7 @@ class Gaming extends Component {
     this.getGamingVideoData()
   }
 
-  renderFailureView = () => (
-    <FailureContainer>
-      <FailureImg
-        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
-        alt="failure"
-      />
-      <FailureHeading>Oops! Something Went Wrong</FailureHeading>
-      <FailurePara>
-        We are having some trouble to complete your request.
-      </FailurePara>
-      <FailurePara>Please try again.</FailurePara>
-      <FailureRetryBtn onClick={this.retryAgain}>Retry</FailureRetryBtn>
-    </FailureContainer>
-  )
+  renderFailureView = () => <FailureStatus onRetry={this.retryAgain} />
 
   renderLoader = () => (
     <LoaderContainer data-testid="loader">

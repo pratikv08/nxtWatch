@@ -71,9 +71,11 @@ export const MobileSidebarContainer = styled.div`
   left: 0;
   top: 0;
   bottom: 0;
-  width: 250px;
+  width: 70%;
   background-color: #ffffff;
   z-index: 1000;
+  transform: translateX(${props => (props.isVisible ? '0' : '-100%')});
+  transition: transform 0.3s ease-in-out;
   @media (min-width: 768px) {
     display: none;
   }
@@ -90,4 +92,52 @@ export const Overlay = styled.div`
   @media (min-width: 768px) {
     display: none;
   }
+`
+export const PopupContainer = styled.div`
+  background-color: ${props => (props.bgColor ? '#181818' : '#f9f9f9')};
+  width: 300px;
+  height: 170px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 7px 36px ${props => (props.bgColor ? 'grey' : 'black')};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  @media (min-width: 768px) {
+    width: 350px;
+  }
+`
+
+export const PopupWarning = styled.p`
+  color: ${props => (props.color ? ' #f1f1f1' : '#181818')};
+  font-size: 18px;
+  margin-top: 0px;
+  margin-bottom: 36px;
+  text-align: center;
+  font-weight: 500;
+`
+export const CancelConfirmBtnContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+`
+export const CancelBtn = styled.button`
+  padding: 9px 20px;
+  border-radius: 2px;
+  background: transparent;
+  font-size: 18px;
+  font-weight: 500;
+  border: 1.5px grey solid;
+  cursor: pointer;
+  color: grey;
+  margin-right: 10px;
+`
+export const ConfirmBtn = styled.button`
+  padding: 9px 20px;
+  border-radius: 2px;
+  background: #3b82f6;
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  margin-left: 10px;
 `

@@ -1,9 +1,10 @@
 import {Component} from 'react'
 import {IoMoon, IoMenu} from 'react-icons/io5'
 import {FiLogOut, FiSun} from 'react-icons/fi'
+import Popup from 'reactjs-popup'
 import {withRouter} from 'react-router-dom'
 import Cookies from 'js-cookie'
-import SideBar from '../SideBar'
+import SideBarSm from '../SideBarSm'
 
 import NxtWatchContext from '../../context/NxtWatchContext'
 
@@ -18,6 +19,11 @@ import {
   NavMenuLogoutButton,
   Overlay,
   MobileSidebarContainer,
+  PopupContainer,
+  PopupWarning,
+  CancelBtn,
+  ConfirmBtn,
+  CancelConfirmBtnContainer,
 } from './styledComponents'
 
 class Header extends Component {
@@ -27,6 +33,17 @@ class Header extends Component {
     this.setState(prevState => ({
       isSideBarVisible: !prevState.isSideBarVisible,
     }))
+  }
+
+  closeSideBar = () => {
+    this.setState({isSideBarVisible: false})
+  }
+
+  onLogout = () => {
+    const {history} = this.props
+    Cookies.remove('jwt_token')
+    history.replace('/login')
+    // console.log(history)
   }
 
   render() {
@@ -42,12 +59,6 @@ class Header extends Component {
           const headerImg = isDarkTheme
             ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-dark-theme-img.png'
             : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png'
-
-          const onLogout = () => {
-            const {history} = this.props
-            history.replace('/login')
-            console.log(history)
-          }
 
           return (
             <>
@@ -69,13 +80,39 @@ class Header extends Component {
                     >
                       <IoMenu />
                     </NavMenuButton>
-                    <NavMenuButton
-                      type="button"
-                      color={isDarkTheme}
-                      onClick={onLogout}
+
+                    <Popup
+                      modal
+                      trigger={
+                        <NavMenuButton type="button" color={isDarkTheme}>
+                          <FiLogOut />
+                        </NavMenuButton>
+                      }
                     >
-                      <FiLogOut />
-                    </NavMenuButton>
+                      {close => (
+                        <>
+                          <PopupContainer bgColor={isDarkTheme}>
+                            <PopupWarning color={isDarkTheme}>
+                              Are you sure you want to logout?
+                            </PopupWarning>
+                            <CancelConfirmBtnContainer>
+                              <CancelBtn type="button" onClick={() => close()}>
+                                Cancel
+                              </CancelBtn>
+                              <ConfirmBtn
+                                type="button"
+                                onClick={() => {
+                                  this.onLogout()
+                                  close()
+                                }}
+                              >
+                                Confirm
+                              </ConfirmBtn>
+                            </CancelConfirmBtnContainer>
+                          </PopupContainer>
+                        </>
+                      )}
+                    </Popup>
                   </MenuList>
                 </NavMenu>
                 <LgMenuList>
@@ -90,12 +127,49 @@ class Header extends Component {
                     src="https://assets.ccbp.in/frontend/react-js/nxt-watch-profile-img.png"
                     alt="profile"
                   />
-                  <NavMenuLogoutButton type="button" onClick={onLogout}>
-                    Logout
-                  </NavMenuLogoutButton>
+
+                  <Popup
+                    modal
+                    trigger={
+                      <NavMenuLogoutButton type="button">
+                        Logout
+                      </NavMenuLogoutButton>
+                    }
+                  >
+                    {close => (
+                      <>
+                        <PopupContainer bgColor={isDarkTheme}>
+                          <PopupWarning color={isDarkTheme}>
+                            Are you sure you want to logout?
+                          </PopupWarning>
+                          <CancelConfirmBtnContainer>
+                            <CancelBtn type="button" onClick={() => close()}>
+                              Cancel
+                            </CancelBtn>
+                            <ConfirmBtn
+                              type="button"
+                              onClick={() => {
+                                this.onLogout()
+                                close()
+                              }}
+                            >
+                              Confirm
+                            </ConfirmBtn>
+                          </CancelConfirmBtnContainer>
+                        </PopupContainer>
+                      </>
+                    )}
+                  </Popup>
                 </LgMenuList>
               </Navbar>
-              {isSideBarVisible && <SideBar />}
+              {isSideBarVisible && (
+                <>
+                  <Overlay onClick={this.toggleSideBar} />
+                  <MobileSidebarContainer isVisible={isSideBarVisible}>
+                    <SideBarSm closeSideBar={this.closeSideBar} />
+                  </MobileSidebarContainer>
+                </>
+              )}
             </>
           )
         }}
