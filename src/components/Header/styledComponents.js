@@ -20,12 +20,13 @@ export const NavImg = styled.img`
 export const NavMenu = styled.ul`
   display: flex;
   align-items: center;
+  padding-left: 0px;
   @media screen and (min-width: 768px) {
-    display: none;
   }
 `
 export const MenuList = styled.li`
   display: flex;
+  padding-left: 0px;
 `
 export const NavMenuButton = styled.button`
   outline: none;
@@ -41,9 +42,18 @@ export const NavMenuButton = styled.button`
   }
 `
 
+export const SmMenuList = styled.ul`
+  display: flex;
+  align-items: center;
+  padding-left: 0px;
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
+`
+
 export const LgMenuList = styled.ul`
   display: none;
-
+  padding-left: 0px;
   @media screen and (min-width: 768px) {
     display: flex;
     align-items: center;

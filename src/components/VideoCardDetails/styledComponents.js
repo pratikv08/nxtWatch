@@ -5,7 +5,7 @@ export const VideoCardDetailsContainer = styled.div`
   display: flex;
   // align-items: center;
   // flex-direction: column;
-  //  background-color: #f9f9f9;
+  background-color: ${props => (props.bgColor ? '#0f0f0f' : '#f9f9f9')};
   min-height: 100vh;
   width: 100%;
 `
@@ -64,7 +64,7 @@ export const VideoCardDetailsDescriptionDetailsContainerBottom = styled.div`
   display: flex;
   align-items: center;
 `
-export const LikeContainer = styled.div`
+export const LikeContainer = styled.button`
   display: flex;
   align-items: center;
   margin-right: 12px;
@@ -72,10 +72,52 @@ export const LikeContainer = styled.div`
   cursor: pointer;
   user-select: none;
   font-weight: 600;
+  outline: none;
+  border: none;
+  background: transparent;
+  color: ${props => (props.color ? '#2563eb' : '#64748b')};
+`
+export const DislikeContainer = styled.button`
+  display: flex;
+  align-items: center;
+  margin-right: 12px;
+  margin-left: 12px;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 600;
+  outline: none;
+  border: none;
+  background: transparent;
+  color: ${props => (props.color ? '#2563eb' : '#64748b')};
+`
+export const SavedContainer = styled.button`
+  display: flex;
+  align-items: center;
+  margin-right: 12px;
+  margin-left: 12px;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 600;
+  outline: none;
+  border: none;
+  background: transparent;
+  color: ${props => (props.color ? '#2563eb' : '#64748b')};
 `
 export const LikePara = styled.p`
   margin-right: 4px;
   margin-left: 4px;
+  color: ${props => (props.color ? '#2563eb' : '#64748b')};
+`
+
+export const DislikePara = styled.p`
+  margin-right: 4px;
+  margin-left: 4px;
+  color: ${props => (props.color ? '#2563eb' : '#64748b')};
+`
+export const SavePara = styled.p`
+  margin-right: 4px;
+  margin-left: 4px;
+  color: ${props => (props.color ? '#2563eb' : '#64748b')};
 `
 
 export const ChannelDetails = styled.div`
@@ -96,7 +138,7 @@ export const ChannelSubDetails = styled.div``
 export const ChannelName = styled.p`
   margin-bottom: 8px;
   margin-top: 2px;
-  color: ${props => (props.color ? '#f1f5f9' : ' #181818')};
+  color: ${props => (props.color ? '#f1f5f9' : '#181818')};
 `
 export const Subscribers = styled.p`
   margin-top: 8px;
@@ -116,7 +158,7 @@ export const TitleSm = styled.p`
   display: inline;
   line-height: 1.7;
   font-size: 15px;
-  color: ${props => (props.color ? '#f1f5f9' : ' #181818')};
+  color: ${props => (props.color ? '#f1f5f9' : '#181818')};
   @media screen and (min-width: 768px) {
     display: none;
   }

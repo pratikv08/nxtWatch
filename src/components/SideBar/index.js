@@ -18,16 +18,7 @@ import {
 import NxtWatchContext from '../../context/NxtWatchContext'
 
 class SideBar extends Component {
-  state = {
-    activeSection: 'Home',
-  }
-
-  handleItemClick = item => {
-    this.setState({activeSection: item})
-  }
-
   render() {
-    const {activeSection} = this.state
     const {location} = this.props
     const {pathname} = location
 
@@ -40,26 +31,47 @@ class SideBar extends Component {
             <SideBarContainer bgColor={isDarkTheme}>
               <SideBarListContainer>
                 <Link to="/" style={{textDecoration: 'none'}}>
-                  <SideBarList section={pathname === '/'}>
-                    <StyledHomeLogo color={pathname === '/'} />
+                  <SideBarList bgColor={isDarkTheme} active={pathname === '/'}>
+                    <StyledHomeLogo
+                      color={isDarkTheme}
+                      active={pathname === '/'}
+                    />
                     <CustomMenu color={isDarkTheme}>Home</CustomMenu>
                   </SideBarList>
                 </Link>
                 <Link to="/trending" style={{textDecoration: 'none'}}>
-                  <SideBarList section={pathname === '/trending'}>
-                    <StyledTrendLogo color={pathname === '/trending'} />
+                  <SideBarList
+                    bgColor={isDarkTheme}
+                    active={pathname === '/trending'}
+                  >
+                    <StyledTrendLogo
+                      color={isDarkTheme}
+                      active={pathname === '/trending'}
+                    />
                     <CustomMenu color={isDarkTheme}>Trending</CustomMenu>
                   </SideBarList>
                 </Link>
                 <Link to="/gaming" style={{textDecoration: 'none'}}>
-                  <SideBarList section={pathname === '/gaming'}>
-                    <StyledGameLogo color={pathname === '/gaming'} />
+                  <SideBarList
+                    bgColor={isDarkTheme}
+                    active={pathname === '/gaming'}
+                  >
+                    <StyledGameLogo
+                      color={isDarkTheme}
+                      active={pathname === '/gaming'}
+                    />
                     <CustomMenu color={isDarkTheme}>Gaming</CustomMenu>
                   </SideBarList>
                 </Link>
                 <Link to="/saved-videos" style={{textDecoration: 'none'}}>
-                  <SideBarList section={pathname === '/saved-videos'}>
-                    <StyledSavedVLogo color={pathname === '/saved-videos'} />
+                  <SideBarList
+                    bgColor={isDarkTheme}
+                    active={pathname === '/saved-videos'}
+                  >
+                    <StyledSavedVLogo
+                      color={isDarkTheme}
+                      active={pathname === '/saved-videos'}
+                    />
                     <CustomMenu color={isDarkTheme}>Saved videos</CustomMenu>
                   </SideBarList>
                 </Link>
@@ -81,7 +93,7 @@ class SideBar extends Component {
                   />
                 </FollowList>
                 <FooterPara color={isDarkTheme}>
-                  Enjoy! Now to see your channels recommendations!
+                  Enjoy! Now to see your channels and recommendations!
                 </FooterPara>
               </Footer>
             </SideBarContainer>

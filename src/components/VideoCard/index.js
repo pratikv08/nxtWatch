@@ -26,12 +26,12 @@ const VideoCard = props => {
         const {isDarkTheme} = value
         return (
           <EachVideoCard>
-            <Link to={`/video/${id}`} style={{textDecoration: 'none'}}>
-              <CustomImg src={thumbnailUrl} alt="" />
+            <Link to={`/videos/${id}`} style={{textDecoration: 'none'}}>
+              <CustomImg src={thumbnailUrl} alt="video thumbnail" />
             </Link>
             <VideoDetails>
-              <CustomChannelImg src={profileImageUrl} alt="" />
-              <Link to={`/video/${id}`} style={{textDecoration: 'none'}}>
+              <CustomChannelImg src={profileImageUrl} alt="channel logo" />
+              <Link to={`/videos/${id}`} style={{textDecoration: 'none'}}>
                 <TitleChannelContainer>
                   <Title color={isDarkTheme}>{title}</Title>
                   <ChannelViewsDate color={isDarkTheme}>

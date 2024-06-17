@@ -1,6 +1,10 @@
 import styled from 'styled-components'
 import {BsDot} from 'react-icons/bs'
 
+export const SavedVideosContainerMain = styled.div`
+  min-height: 120vh;
+  background-color: ${props => (props.bgColor ? '#0f0f0f' : '#f9f9f9')};
+`
 export const SavedVideosContainer = styled.div`
   min-height: 120vh;
   display: flex;
@@ -100,7 +104,7 @@ export const SavedVideoCardNameViewTimeContainer = styled.div`
   }
 `
 
-export const SavedVideoCardTitle = styled.h4`
+export const SavedVideoCardTitle = styled.p`
   color: ${props => (props.color ? '#f1f5f9' : ' #181818')};
   margin-bottom: 8px;
   margin-top: 0px;

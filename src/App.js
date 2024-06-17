@@ -50,7 +50,7 @@ class App extends Component {
         <Switch>
           <Route exact path="/login" component={Login} />
           <Route exact path="/" component={Home} />
-          <Route exact path="/video/:id" component={VideoCardDetails} />
+          <Route exact path="/videos/:id" component={VideoCardDetails} />
           <Route exact path="/trending" component={Trending} />
           <Route exact path="/gaming" component={Gaming} />
           <Route exact path="/saved-videos" component={SavedVideos} />

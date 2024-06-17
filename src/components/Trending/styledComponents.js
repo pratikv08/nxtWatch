@@ -1,13 +1,19 @@
 import styled from 'styled-components'
 import {BsDot} from 'react-icons/bs'
 
+export const TrendingContainerMain = styled.div`
+  min-height: 120vh;
+  background-color: ${props => (props.bgColor ? '#0f0f0f' : '#f9f9f9')};
+`
 export const TrendingContainer = styled.div`
   min-height: 120vh;
   display: flex;
+  background-color: ${props => (props.bgColor ? '#0f0f0f' : '#f9f9f9')};
 `
 
 export const TrendingContainerSubContainer = styled.div`
   width: 100%;
+  background-color: ${props => (props.bgColor ? '#0f0f0f' : '#f9f9f9')};
   @media screen and (min-width: 768px) {
     width: 79%;
   }
@@ -108,7 +114,7 @@ export const TrendingCardViewTimeNameContainer = styled.div`
     align-items: flex-start;
   }
 `
-export const TrendingCardTitle = styled.h3`
+export const TrendingCardTitle = styled.p`
   font-size: 15px;
   font-weight: 500;
   margin-top: 0px;

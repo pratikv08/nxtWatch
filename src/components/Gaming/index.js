@@ -1,13 +1,14 @@
 import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
+import {Redirect, Link} from 'react-router-dom'
 import {SiYoutubegaming} from 'react-icons/si'
-import {Link} from 'react-router-dom'
 import SideBar from '../SideBar'
 import Header from '../Header'
 import FailureStatus from '../FailureStatus'
 import NxtWatchContext from '../../context/NxtWatchContext'
 import {
+  GamingContainerMain,
   GamingContainer,
   GamingSubContainer,
   TopSection,
@@ -19,11 +20,6 @@ import {
   GamingCardTitle,
   View,
   LoaderContainer,
-  FailureContainer,
-  FailureImg,
-  FailureHeading,
-  FailurePara,
-  FailureRetryBtn,
 } from './styledComponents'
 
 const apiStatusConstants = {
@@ -65,7 +61,7 @@ class Gaming extends Component {
       }))
 
       this.setState({gamingData, apiStatus: apiStatusConstants.success})
-    } else if (response.status === 401) {
+    } else {
       this.setState({
         apiStatus: apiStatusConstants.failure,
       })
@@ -80,7 +76,7 @@ class Gaming extends Component {
           const {isDarkTheme} = value
           return (
             <GamingSubContainer bgColor={isDarkTheme}>
-              <TopSection bgColor={isDarkTheme}>
+              <TopSection bgColor={isDarkTheme} data-testid="banner">
                 <FireContainer bgColor={isDarkTheme}>
                   <SiYoutubegaming size={35} style={{color: 'red'}} />
                 </FireContainer>
@@ -89,15 +85,18 @@ class Gaming extends Component {
               <GamingCardContainer bgColor={isDarkTheme}>
                 {gamingData.map(game => (
                   <Link
-                    to={`/video/${game.id}`}
+                    to={`/videos/${game.id}`}
                     style={{textDecoration: 'none'}}
                   >
-                    <GamingCard>
-                      <GamingCardImg src={game.thumbnailUrl} alt="" />
+                    <GamingCard key={game.id}>
+                      <GamingCardImg
+                        src={game.thumbnailUrl}
+                        alt="video thumbnail"
+                      />
                       <GamingCardTitle color={isDarkTheme}>
                         {game.title}
                       </GamingCardTitle>
-                      <View>{`${game.viewCount} Watching Worlwide`}</View>
+                      <View>{`${game.viewCount} Watching Worldwide`}</View>
                     </GamingCard>
                   </Link>
                 ))}
@@ -136,14 +135,25 @@ class Gaming extends Component {
   }
 
   render() {
+    const jwtToken = Cookies.get('jwt_token')
+    if (jwtToken === undefined) {
+      return <Redirect to="/login" />
+    }
     return (
-      <>
-        <Header />
-        <GamingContainer>
-          <SideBar />
-          {this.renderGamingSection()}
-        </GamingContainer>
-      </>
+      <NxtWatchContext.Consumer>
+        {value => {
+          const {isDarkTheme} = value
+          return (
+            <GamingContainerMain data-testid="gaming" bgColor={isDarkTheme}>
+              <Header />
+              <GamingContainer bgColor={isDarkTheme}>
+                <SideBar />
+                {this.renderGamingSection()}
+              </GamingContainer>
+            </GamingContainerMain>
+          )
+        }}
+      </NxtWatchContext.Consumer>
     )
   }
 }

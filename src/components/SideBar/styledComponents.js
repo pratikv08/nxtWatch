@@ -8,7 +8,7 @@ export const SideBarContainer = styled.div`
   width: 21%;
   // padding-left: 27px;
   background-color: ${props => (props.bgColor ? '#181818' : '#f9f9f9')};
-  height: 115vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -25,7 +25,13 @@ export const SideBarList = styled.li`
   cursor: pointer;
   display: flex;
   align-items: center;
-  background: ${props => (props.section ? '#d7dfe9' : '')};
+  background: ${props => {
+    if (props.active) {
+      return props.bgColor ? '#383838' : '#d7dfe9'
+    }
+    return ''
+  }};
+
   padding: 4px 36px;
   text-decoration: none;
 `
@@ -35,32 +41,52 @@ export const CustomMenu = styled.p`
   color: ${props => (props.color ? '#f8fafc' : '#181818')};
 `
 export const StyledHomeLogo = styled(IoMdHome)`
-  font-size: 19px;
+  font-size: 23px;
   margin-right: 30px;
-  color: ${props => (props.color ? 'red' : 'black')};
+  color: ${props => {
+    if (props.active) {
+      return 'red'
+    }
+    return props.color ? '#f8fafc' : '#181818'
+  }};
 `
 export const StyledTrendLogo = styled(FaFire)`
-  font-size: 19px;
+  font-size: 22px;
   margin-right: 30px;
-  color: ${props => (props.color ? 'red' : 'black')};
+  color: ${props => {
+    if (props.active) {
+      return 'red'
+    }
+    return props.color ? '#f8fafc' : '#181818'
+  }};
 `
 export const StyledGameLogo = styled(SiYoutubegaming)`
-  font-size: 19px;
+  font-size: 22px;
   margin-right: 30px;
-  color: ${props => (props.color ? 'red' : 'black')};
+  color: ${props => {
+    if (props.active) {
+      return 'red'
+    }
+    return props.color ? '#f8fafc' : '#181818'
+  }};
 `
 export const StyledSavedVLogo = styled(CgPlayListAdd)`
-  font-size: 23px;
+  font-size: 25px;
   margin-right: 27px;
   margin-top: 6px;
-  color: ${props => (props.color ? 'red' : 'black')};
+  color: ${props => {
+    if (props.active) {
+      return 'red'
+    }
+    return props.color ? '#f8fafc' : '#181818'
+  }};
 `
 
 export const Footer = styled.div`
   margin-bottom: 20px;
   padding-left: 24px;
 `
-export const FooterHeading = styled.h2`
+export const FooterHeading = styled.p`
   font-size: 17px;
   color: ${props => (props.color ? '#f8fafc' : '#181818')};
 `

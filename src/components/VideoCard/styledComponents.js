@@ -4,17 +4,17 @@ import {BsDot} from 'react-icons/bs'
 export const EachVideoCard = styled.li`
   margin-bottom: 30px;
   width: 100%;
-  // max-width: 320px;
 
   @media screen and (min-width: 576px) {
     width: 48%;
   }
   @media screen and (min-width: 768px) {
-    width: calc(50% - 18px); // Adjust for gap
+    width: calc(50% - 18px);
+    margin-bottom: 12px;
   }
 
   @media screen and (min-width: 1024px) {
-    width: calc(33.333% - 18px); // Adjust for gap
+    width: calc(33.333% - 18px);
   }
 `
 export const CustomImg = styled.img`

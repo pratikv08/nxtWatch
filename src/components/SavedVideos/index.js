@@ -1,9 +1,12 @@
 import {Component} from 'react'
+import Cookies from 'js-cookie'
+import {Redirect, Link} from 'react-router-dom'
 import {IoBookmarks} from 'react-icons/io5'
 import SideBar from '../SideBar'
 import Header from '../Header'
 import NxtWatchContext from '../../context/NxtWatchContext'
 import {
+  SavedVideosContainerMain,
   SavedVideosContainer,
   SavedVideosSubContainer,
   TopSection,
@@ -38,7 +41,7 @@ class SavedVideos extends Component {
           <NoSavedVideosContainer bgColor={isDarkTheme}>
             <NoSavedVideosImg
               src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-saved-videos-img.png"
-              alt="no-saved-videos"
+              alt="no saved videos"
             />
             <NoSavedVideosHeading color={isDarkTheme}>
               No saved videos found
@@ -53,61 +56,79 @@ class SavedVideos extends Component {
   )
 
   render() {
+    const jwtToken = Cookies.get('jwt_token')
+    if (jwtToken === undefined) {
+      return <Redirect to="/login" />
+    }
     return (
-      <>
-        <Header />
-        <SavedVideosContainer>
-          <SideBar />
-          <NxtWatchContext.Consumer>
-            {value => {
-              const {savedVideos, isDarkTheme} = value
-              return savedVideos.length > 0 ? (
-                <SavedVideosSubContainer bgColor={isDarkTheme}>
-                  <TopSection bgColor={isDarkTheme}>
-                    <FireContainer bgColor={isDarkTheme}>
-                      <IoBookmarks size={35} style={{color: 'red'}} />
-                    </FireContainer>
-                    <CustomHeading color={isDarkTheme}>
-                      Saved Videos
-                    </CustomHeading>
-                  </TopSection>
-                  <SavedVideoCardContainer bgColor={isDarkTheme}>
-                    {savedVideos.map(vid => (
-                      <SavedVideoCard>
-                        <SavedVideosCardImg src={vid.thumbnailUrl} alt="" />
-                        <SavedVideoCardDetails>
-                          <SavedVideoCardChannelImg
-                            src={vid.channel.profileImageUrl}
-                            alt=""
-                          />
-                          <SavedVideoCardTitleNameViewTimeContainer>
-                            <SavedVideoCardTitle color={isDarkTheme}>
-                              {vid.title}
-                            </SavedVideoCardTitle>
-                            <SavedVideoCardNameViewTimeContainer>
-                              <SavedVideoCardName>
-                                {vid.channel.name}
-                              </SavedVideoCardName>
-                              <StyledBsDot1 />
-                              <SavedVideoCardViewTime>
-                                <View>{`${vid.viewCount} views`}</View>
-                                <StyledBsDot />
-                                <Time>{vid.publishedAt}</Time>
-                              </SavedVideoCardViewTime>
-                            </SavedVideoCardNameViewTimeContainer>
-                          </SavedVideoCardTitleNameViewTimeContainer>
-                        </SavedVideoCardDetails>
-                      </SavedVideoCard>
-                    ))}
-                  </SavedVideoCardContainer>
-                </SavedVideosSubContainer>
-              ) : (
-                this.renderFailureView()
-              )
-            }}
-          </NxtWatchContext.Consumer>
-        </SavedVideosContainer>
-      </>
+      <NxtWatchContext.Consumer>
+        {value => {
+          const {savedVideos, isDarkTheme} = value
+          // console.log(savedVideos)
+          return (
+            <SavedVideosContainerMain
+              data-testid="savedVideos"
+              bgColor={isDarkTheme}
+            >
+              <Header />
+              <SavedVideosContainer>
+                <SideBar />
+                {savedVideos.length > 0 ? (
+                  <SavedVideosSubContainer bgColor={isDarkTheme}>
+                    <TopSection bgColor={isDarkTheme} data-testid="banner">
+                      <FireContainer bgColor={isDarkTheme}>
+                        <IoBookmarks size={35} style={{color: 'red'}} />
+                      </FireContainer>
+                      <CustomHeading color={isDarkTheme}>
+                        Saved Videos
+                      </CustomHeading>
+                    </TopSection>
+                    <SavedVideoCardContainer bgColor={isDarkTheme}>
+                      {savedVideos.map(vid => (
+                        <Link
+                          to={`videos/${vid.id}`}
+                          style={{textDecoration: 'none'}}
+                        >
+                          <SavedVideoCard key={vid.id}>
+                            <SavedVideosCardImg
+                              src={vid.thumbnailUrl}
+                              alt="video thumbnail"
+                            />
+                            <SavedVideoCardDetails>
+                              <SavedVideoCardChannelImg
+                                src={vid.channel.profileImageUrl}
+                                alt="channel logo"
+                              />
+                              <SavedVideoCardTitleNameViewTimeContainer>
+                                <SavedVideoCardTitle color={isDarkTheme}>
+                                  {vid.title}
+                                </SavedVideoCardTitle>
+                                <SavedVideoCardNameViewTimeContainer>
+                                  <SavedVideoCardName>
+                                    {vid.channel.name}
+                                  </SavedVideoCardName>
+                                  <StyledBsDot1 />
+                                  <SavedVideoCardViewTime>
+                                    <View>{`${vid.viewCount} views`}</View>
+                                    <StyledBsDot />
+                                    <Time>{vid.publishedAt}</Time>
+                                  </SavedVideoCardViewTime>
+                                </SavedVideoCardNameViewTimeContainer>
+                              </SavedVideoCardTitleNameViewTimeContainer>
+                            </SavedVideoCardDetails>
+                          </SavedVideoCard>
+                        </Link>
+                      ))}
+                    </SavedVideoCardContainer>
+                  </SavedVideosSubContainer>
+                ) : (
+                  this.renderFailureView()
+                )}
+              </SavedVideosContainer>
+            </SavedVideosContainerMain>
+          )
+        }}
+      </NxtWatchContext.Consumer>
     )
   }
 }

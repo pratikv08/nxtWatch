@@ -19,7 +19,7 @@ const NotFound = () => (
         <>
           <Header />
           <NotFoundContainer bgColor={isDarkTheme}>
-            <NotFoundImg src={notFoundImg} alt="" />
+            <NotFoundImg src={notFoundImg} alt="not found" />
             <NotFoundHeading color={isDarkTheme}>
               Page Not Found
             </NotFoundHeading>
