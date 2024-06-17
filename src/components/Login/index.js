@@ -1,5 +1,6 @@
 import {Component} from 'react'
 import Cookies from 'js-cookie'
+import {Redirect} from 'react-router-dom'
 import NxtWatchContext from '../../context/NxtWatchContext'
 import {
   MainLoginContainer,
@@ -21,6 +22,7 @@ class Login extends Component {
     username: '',
     password: '',
     errMsg: '',
+    checkbox: false,
   }
 
   onLoginSuccess = jwtToken => {
@@ -59,7 +61,6 @@ class Login extends Component {
     } else {
       this.onLoginFailure(data.error_msg)
     }
-    console.log(data)
   }
 
   onChangeUsername = event => {
@@ -74,9 +75,18 @@ class Login extends Component {
     })
   }
 
+  onChangeCheckbox = () => {
+    this.setState(prevState => ({
+      checkbox: !prevState.checkbox,
+    }))
+  }
+
   render() {
-    const {username, password, errMsg} = this.state
-    console.log(username, password)
+    const {username, password, errMsg, checkbox} = this.state
+    const jwtToken = Cookies.get('jwt_token')
+    if (jwtToken !== undefined) {
+      return <Redirect to="/" />
+    }
     return (
       <NxtWatchContext.Consumer>
         {value => {
@@ -88,7 +98,7 @@ class Login extends Component {
             <MainLoginContainer bgColor={isDarkTheme}>
               <Form bgColor={isDarkTheme} onSubmit={this.onLogin}>
                 <LoginImgContainer>
-                  <LoginImg src={loginImg} alt="" />
+                  <LoginImg src={loginImg} alt="website logo" />
                 </LoginImgContainer>
                 <InpLabContainer>
                   <CustomLabel color={isDarkTheme} htmlFor="username">
@@ -96,8 +106,8 @@ class Login extends Component {
                   </CustomLabel>
                   <CustomInput
                     bgColor={isDarkTheme}
-                    placeholder="Username"
-                    id="input"
+                    placeholder="pratik"
+                    id="username"
                     type="text"
                     value={username}
                     onChange={this.onChangeUsername}
@@ -109,21 +119,26 @@ class Login extends Component {
                   </CustomLabel>
                   <CustomInput
                     bgColor={isDarkTheme}
-                    placeholder="Password"
+                    placeholder="pratik@2024"
                     id="password"
-                    type="password"
+                    type={checkbox ? 'text' : 'password'}
                     value={password}
                     onChange={this.onChangePassword}
                   />
                 </InpLabContainer>
                 <CheckboxContainer>
-                  <Checkbox type="checkbox" />
-                  <CheckboxLabel color={isDarkTheme}>
+                  <Checkbox
+                    onChange={this.onChangeCheckbox}
+                    type="checkbox"
+                    id="checkbox"
+                    checked={checkbox}
+                  />
+                  <CheckboxLabel color={isDarkTheme} htmlFor="checkbox">
                     Show Password
                   </CheckboxLabel>
                 </CheckboxContainer>
                 <LoginBtn type="submit">Login</LoginBtn>
-                <ErrorLoginMsg>{errMsg}</ErrorLoginMsg>
+                {errMsg && <ErrorLoginMsg>{errMsg}</ErrorLoginMsg>}
               </Form>
             </MainLoginContainer>
           )

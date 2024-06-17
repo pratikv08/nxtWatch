@@ -1,5 +1,9 @@
 import styled from 'styled-components'
 
+export const HomeContainerMain = styled.div`
+  min-height: 100vh;
+  background-color: ${props => (props.bgColor ? '#181818' : '#f9f9f9')};
+`
 export const HomeContainer = styled.div`
   display: flex;
   // align-items: center;
@@ -14,7 +18,7 @@ export const HomeVideosList = styled.div`
   min-height: 100vh;
   padding: 0px;
   width: 100%;
-  background-color: ${props => (props.bgColor ? '#0f0f0f' : '#f9f9f9')};
+  background-color: ${props => (props.bgColor ? '#181818' : '#f9f9f9')};
   @media screen and (min-width: 576px) {
     display: flex;
     // align-items: center;
@@ -46,7 +50,6 @@ export const SearchBar = styled.div`
   @media screen and (min-width: 768px) {
     width: 50%;
   }
-  // padding:1px 13px 1px 3px;
 `
 
 export const SearchInput = styled.input`
@@ -56,12 +59,20 @@ export const SearchInput = styled.input`
   width: 100%;
   background: transparent;
   color: ${props => (props.color ? '#f8fafc' : '#181818')};
+  @media screen and (min-width: 768px) {
+    padding: 10px 14px;
+  }
 `
 
-export const SearchIconContainer = styled.div`
+export const SearchIconContainer = styled.button`
   padding: 6px 23px 4px 23px;
+  border: none;
+  outline: none;
   cursor: pointer;
   background-color: ${props => (props.bgColor ? '#606060' : '#ebebeb')};
+  @media screen and (min-width: 768px) {
+    padding: 10px 23px 4px 23px;
+  }
 `
 export const VideoCardContainer = styled.ul`
   padding-left: 0px;
@@ -69,19 +80,14 @@ export const VideoCardContainer = styled.ul`
   width: 100%;
   height: 120vh;
   overflow: auto;
-  // flex-grow: 1;
   @media screen and (min-width: 576px) {
     display: flex;
-    // justify-content:flex-start;
     gap: 18px;
-    // justify-content:center;
     flex-wrap: wrap;
   }
   @media screen and (min-width: 768px) {
     display: flex;
-    // justify-content:flex-start;
     gap: 18px;
-    // justify-content:center;
     flex-wrap: wrap;
   }
 `
@@ -185,7 +191,7 @@ export const BannerImg = styled.img`
     width: 170px;
   }
 `
-export const BannerHeading = styled.h1`
+export const BannerHeading = styled.p`
   font-weight: 500;
   font-size: 20px;
   line-height: 1.8;

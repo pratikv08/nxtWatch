@@ -1,13 +1,14 @@
 import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
-import {Link} from 'react-router-dom'
+import {Redirect, Link} from 'react-router-dom'
 import {AiFillFire} from 'react-icons/ai'
 import SideBar from '../SideBar'
 import Header from '../Header'
 import FailureStatus from '../FailureStatus'
 import NxtWatchContext from '../../context/NxtWatchContext'
 import {
+  TrendingContainerMain,
   TrendingContainer,
   TrendingContainerSubContainer,
   TopSection,
@@ -24,11 +25,6 @@ import {
   Time,
   StyledBsDot,
   LoaderContainer,
-  FailureContainer,
-  FailureImg,
-  FailureHeading,
-  FailurePara,
-  FailureRetryBtn,
   TrendingCardChannelImg,
   TrendingCardViewTimeNameTitleContainer,
   TrendingCardViewTimeNameContainer,
@@ -87,7 +83,7 @@ class Trending extends Component {
         trendingData,
         apiStatus: apiStatusConstants.success,
       })
-    } else if (response.status === 401) {
+    } else {
       this.setState({
         apiStatus: apiStatusConstants.failure,
       })
@@ -101,8 +97,8 @@ class Trending extends Component {
         {value => {
           const {isDarkTheme} = value
           return (
-            <TrendingContainerSubContainer>
-              <TopSection bgColor={isDarkTheme}>
+            <TrendingContainerSubContainer bgColor={isDarkTheme}>
+              <TopSection bgColor={isDarkTheme} data-testid="banner">
                 <FireContainer bgColor={isDarkTheme}>
                   <AiFillFire size={35} style={{color: 'red'}} />
                 </FireContainer>
@@ -110,21 +106,19 @@ class Trending extends Component {
               </TopSection>
               <TrendingCardContainer bgColor={isDarkTheme}>
                 {trendingData.map(vid => (
-                  <TrendingCard>
-                    <Link
-                      to={`/video/${vid.id}`}
-                      style={{textDecoration: 'none'}}
-                    >
-                      <TrendingCardImg src={vid.thumbnailUrl} alt="" />
-                    </Link>
-                    <Link
-                      to={`/video/${vid.id}`}
-                      style={{textDecoration: 'none'}}
-                    >
+                  <Link
+                    to={`/videos/${vid.id}`}
+                    style={{textDecoration: 'none'}}
+                  >
+                    <TrendingCard key={vid.id}>
+                      <TrendingCardImg
+                        src={vid.thumbnailUrl}
+                        alt="video thumbnail"
+                      />
                       <TrendingCardDetails>
                         <TrendingCardChannelImg
                           src={vid.channel.profileImageUrl}
-                          alt=""
+                          alt="channel logo"
                         />
                         <TrendingCardViewTimeNameTitleContainer>
                           <TrendingCardTitle color={isDarkTheme}>
@@ -143,8 +137,8 @@ class Trending extends Component {
                           </TrendingCardViewTimeNameContainer>
                         </TrendingCardViewTimeNameTitleContainer>
                       </TrendingCardDetails>
-                    </Link>
-                  </TrendingCard>
+                    </TrendingCard>
+                  </Link>
                 ))}
               </TrendingCardContainer>
             </TrendingContainerSubContainer>
@@ -181,14 +175,25 @@ class Trending extends Component {
   }
 
   render() {
+    const jwtToken = Cookies.get('jwt_token')
+    if (jwtToken === undefined) {
+      return <Redirect to="/login" />
+    }
     return (
-      <>
-        <Header />
-        <TrendingContainer>
-          <SideBar />
-          {this.renderTrendingSection()}
-        </TrendingContainer>
-      </>
+      <NxtWatchContext.Consumer>
+        {value => {
+          const {isDarkTheme} = value
+          return (
+            <TrendingContainerMain data-testid="trending" bgColor={isDarkTheme}>
+              <Header />
+              <TrendingContainer bgColor={isDarkTheme}>
+                <SideBar />
+                {this.renderTrendingSection()}
+              </TrendingContainer>
+            </TrendingContainerMain>
+          )
+        }}
+      </NxtWatchContext.Consumer>
     )
   }
 }

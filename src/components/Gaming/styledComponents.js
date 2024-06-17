@@ -1,11 +1,17 @@
 import styled from 'styled-components'
 
+export const GamingContainerMain = styled.div`
+  min-height: 120vh;
+  background-color: ${props => (props.bgColor ? '#0f0f0f' : '#f9f9f9')};
+`
 export const GamingContainer = styled.div`
   min-height: 120vh;
   display: flex;
+  background-color: ${props => (props.bgColor ? '#0f0f0f' : '#f9f9f9')};
 `
 export const GamingSubContainer = styled.div`
   width: 100%;
+  background-color: ${props => (props.bgColor ? '#0f0f0f' : '#f9f9f9')};
   @media screen and (min-width: 768px) {
     width: 79%;
   }

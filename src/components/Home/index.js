@@ -1,15 +1,15 @@
 import React, {Component} from 'react'
 import Loader from 'react-loader-spinner'
-import {IoIosSearch} from 'react-icons/io'
 import Cookies from 'js-cookie'
+import {Redirect} from 'react-router-dom'
+import {IoIosSearch} from 'react-icons/io'
 import Header from '../Header'
 import VideoCard from '../VideoCard'
 import SideBar from '../SideBar'
-import Trending from '../Trending'
-import Gaming from '../Gaming'
 import FailureStatus from '../FailureStatus'
 import NxtWatchContext from '../../context/NxtWatchContext'
 import {
+  HomeContainerMain,
   HomeVideosList,
   SearchBar,
   SearchInput,
@@ -40,7 +40,6 @@ const apiStatusConstants = {
 class Home extends Component {
   state = {
     filteredVideosList: [],
-    activeSection: 'Home',
     searchInput: '',
     apiStatus: apiStatusConstants.initial,
     showBanner: true,
@@ -93,7 +92,7 @@ class Home extends Component {
         filteredVideosList,
         apiStatus: apiStatusConstants.success,
       })
-    } else if (response.status === 401) {
+    } else {
       this.setState({
         apiStatus: apiStatusConstants.failure,
       })
@@ -119,18 +118,20 @@ class Home extends Component {
   }
 
   renderBanner = () => (
-    <BannerContainer>
+    <BannerContainer data-testid="banner">
       <BannerContent>
         <BannerImg
           src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
-          alt="logo"
+          alt="nxt watch logo"
         />
         <BannerHeading>
           Buy Nxt Watch Premium prepaid plans with UPI
         </BannerHeading>
         <BannerBtn>GET IT NOW</BannerBtn>
       </BannerContent>
-      <BannerCloseBtn onClick={this.closeBanner}>x</BannerCloseBtn>
+      <BannerCloseBtn data-testid="close" onClick={this.closeBanner}>
+        x
+      </BannerCloseBtn>
     </BannerContainer>
   )
 
@@ -172,7 +173,7 @@ class Home extends Component {
             <FailurePara color={isDarkTheme}>
               Try different key words or remove search filter
             </FailurePara>
-            <FailureRetryBtn onClick={this.retrySearchingAgain}>
+            <FailureRetryBtn type="button" onClick={this.retrySearchingAgain}>
               Retry
             </FailureRetryBtn>
           </FailureContainer>
@@ -205,15 +206,19 @@ class Home extends Component {
 
   render() {
     const {showBanner} = this.state
+    const jwtToken = Cookies.get('jwt_token')
+    if (jwtToken === undefined) {
+      return <Redirect to="/login" />
+    }
     return (
-      <>
-        <Header />
-        <HomeContainer>
-          <SideBar />
-          <NxtWatchContext.Consumer>
-            {value => {
-              const {isDarkTheme} = value
-              return (
+      <NxtWatchContext.Consumer>
+        {value => {
+          const {isDarkTheme} = value
+          return (
+            <HomeContainerMain data-testid="home" bgColor={isDarkTheme}>
+              <Header />
+              <HomeContainer>
+                <SideBar />
                 <HomeVideosList bgColor={isDarkTheme}>
                   {showBanner && this.renderBanner()}
                   <SearchBar>
@@ -228,17 +233,19 @@ class Home extends Component {
                     <SearchIconContainer
                       bgColor={isDarkTheme}
                       onClick={this.searchVideos}
+                      data-testid="searchButton"
+                      type="button"
                     >
-                      <IoIosSearch />
+                      <IoIosSearch size={23} />
                     </SearchIconContainer>
                   </SearchBar>
                   {this.renderHomeSection()}
                 </HomeVideosList>
-              )
-            }}
-          </NxtWatchContext.Consumer>
-        </HomeContainer>
-      </>
+              </HomeContainer>
+            </HomeContainerMain>
+          )
+        }}
+      </NxtWatchContext.Consumer>
     )
   }
 }

@@ -1,6 +1,7 @@
 import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
+import {Redirect} from 'react-router-dom'
 import ReactPlayer from 'react-player'
 import {AiOutlineLike, AiOutlineDislike} from 'react-icons/ai'
 import {IoBookmarksOutline} from 'react-icons/io5'
@@ -19,7 +20,11 @@ import {
   VideoCardDetailsDescriptionDetailsContainerBottom,
   VideoCardDetailsDescriptionDetailsContainer,
   LikeContainer,
+  DislikeContainer,
+  SavedContainer,
   LikePara,
+  DislikePara,
+  SavePara,
   ChannelDetails,
   CustomChannelImg,
   TitleChannelContainer,
@@ -31,11 +36,6 @@ import {
   StyledBsDot,
   VideoCardDetailsDescriptionContainerTop,
   LoaderContainer,
-  FailureContainer,
-  FailureImg,
-  FailureHeading,
-  FailurePara,
-  FailureRetryBtn,
 } from './styledComponents'
 
 const apiStatusConstants = {
@@ -46,7 +46,12 @@ const apiStatusConstants = {
 }
 
 class VideoCardDetails extends Component {
-  state = {videoData: {}, isLiked: false, isDisliked: false}
+  state = {
+    videoData: {},
+    isLiked: false,
+    isDisliked: false,
+    apiStatus: apiStatusConstants.initial,
+  }
 
   componentDidMount() {
     this.getVideoDetails()
@@ -91,7 +96,7 @@ class VideoCardDetails extends Component {
         videoData: videoDetailsData,
         apiStatus: apiStatusConstants.success,
       })
-    } else if (response.status === 401) {
+    } else {
       this.setState({
         apiStatus: apiStatusConstants.failure,
       })
@@ -142,6 +147,8 @@ class VideoCardDetails extends Component {
           return (
             <VideoCardDetailsDescriptionContainer
               style={{background: isDarkTheme ? '#0f0f0f' : '#f9f9f9'}}
+              key={videoData.id}
+              id={videoData.id}
             >
               <VideoCardDetailsDescriptionVideo>
                 <ReactPlayer
@@ -163,29 +170,31 @@ class VideoCardDetails extends Component {
                   </VideoCardDetailsDescriptionDetailsContainerTop>
                   <VideoCardDetailsDescriptionDetailsContainerBottom>
                     <LikeContainer
-                      color={isDarkTheme}
+                      type="button"
+                      color={isLiked}
                       onClick={this.handleLikes}
-                      style={{color: isLiked ? '#3b82f6' : '#64748b'}}
                     >
                       <AiOutlineLike size={26} />
-                      <LikePara>Like</LikePara>
+                      <LikePara color={isLiked}>Like</LikePara>
                     </LikeContainer>
-                    <LikeContainer
-                      color={isDarkTheme}
+                    <DislikeContainer
+                      type="button"
+                      color={isDisliked}
                       onClick={this.handleDislikes}
-                      style={{color: isDisliked ? '#3b82f6' : '#64748b'}}
                     >
                       <AiOutlineDislike size={26} />
-                      <LikePara>Dislike</LikePara>
-                    </LikeContainer>
-                    <LikeContainer
-                      color={isDarkTheme}
+                      <DislikePara color={isDisliked}>Dislike</DislikePara>
+                    </DislikeContainer>
+                    <SavedContainer
+                      type="button"
+                      color={isVideoSaved}
                       onClick={handleSaveVideo}
-                      style={{color: isVideoSaved ? '#3b82f6' : '#64748b'}}
                     >
                       <IoBookmarksOutline size={22} />
-                      <LikePara>{isVideoSaved ? 'Saved' : 'Save'}</LikePara>
-                    </LikeContainer>
+                      <SavePara color={isVideoSaved}>
+                        {isVideoSaved ? 'Saved' : 'Save'}
+                      </SavePara>
+                    </SavedContainer>
                   </VideoCardDetailsDescriptionDetailsContainerBottom>
                 </VideoCardDetailsDescriptionDetailsContainer>
                 <hr
@@ -194,7 +203,7 @@ class VideoCardDetails extends Component {
                 <ChannelDetails>
                   <CustomChannelImg
                     src={videoData.channel.profileImageUrl}
-                    alt=""
+                    alt="channel logo"
                   />
                   <TitleChannelContainer>
                     <ChannelSubDetails>
@@ -244,14 +253,27 @@ class VideoCardDetails extends Component {
     //   return <p>Loading...</p>
     // }
     // console.log(videoData.channel.profileImageUrl)
-
+    const jwtToken = Cookies.get('jwt_token')
+    if (jwtToken === undefined) {
+      return <Redirect to="/login" />
+    }
     return (
       <>
         <Header />
-        <VideoCardDetailsContainer>
-          <SideBar />
-          {this.renderVideoDetailSection()}
-        </VideoCardDetailsContainer>
+        <NxtWatchContext.Consumer>
+          {value => {
+            const {isDarkTheme} = value
+            return (
+              <VideoCardDetailsContainer
+                data-testid="videoItemDetails"
+                bgColor={isDarkTheme}
+              >
+                <SideBar />
+                {this.renderVideoDetailSection()}
+              </VideoCardDetailsContainer>
+            )
+          }}
+        </NxtWatchContext.Consumer>
       </>
     )
   }

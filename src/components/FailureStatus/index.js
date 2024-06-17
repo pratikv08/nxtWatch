@@ -19,15 +19,17 @@ const FailureStatus = props => {
           : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png'
         return (
           <FailureContainer bgColor={isDarkTheme}>
-            <FailureImg src={failureImg} alt="failure" />
+            <FailureImg src={failureImg} alt="failure view" />
             <FailureHeading color={isDarkTheme}>
               Oops! Something Went Wrong
             </FailureHeading>
             <FailurePara color={isDarkTheme}>
-              We are having some trouble to complete your request.
+              We are having some trouble to complete your request. Please try
+              again.
             </FailurePara>
-            <FailurePara color={isDarkTheme}>Please try again.</FailurePara>
-            <FailureRetryBtn onClick={onRetryAgain}>Retry</FailureRetryBtn>
+            <FailureRetryBtn type="button" onClick={onRetryAgain}>
+              Retry
+            </FailureRetryBtn>
           </FailureContainer>
         )
       }}
